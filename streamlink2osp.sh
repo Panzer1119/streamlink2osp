@@ -16,6 +16,8 @@ fi
 ## Streamlink
 LIVESTREAM_URL=${LIVESTREAM_URL:-""}
 STREAMLINK_QUALITY=${STREAMLINK_QUALITY:-"best"}
+STREAMLINK_TWITCH_DISABLE_ADS=${STREAMLINK_TWITCH_DISABLE_ADS:-"true"}
+STREAMLINK_TWITCH_DISABLE_RERUNS=${STREAMLINK_TWITCH_DISABLE_RERUNS:-"true"}
 ## Open Streaming Platform
 OSP_RTMP_FQDN=${OSP_RTMP_FQDN:-""}
 OSP_RTMP_PORT=${OSP_RTMP_PORT:-"1935"}
@@ -49,5 +51,19 @@ if [ -z "${OSP_STREAM_KEY}" ]; then
   exit 1
 fi
 
-# Run command with the variables
-streamlink --stdout "${LIVESTREAM_URL}" "${STREAMLINK_QUALITY}" | ffmpeg -i - -c copy -f flv "${OSP_STREAM_URL}"
+# Build a command with flags to disable twitch ads and reruns if the corresponding environment variables are set
+STREAMLINK_COMMAND="streamlink --stdout"
+if [ "${STREAMLINK_TWITCH_DISABLE_ADS}" = "true" ]; then
+  STREAMLINK_COMMAND="${STREAMLINK_COMMAND} --twitch-disable-ads"
+fi
+if [ "${STREAMLINK_TWITCH_DISABLE_RERUNS}" = "true" ]; then
+  STREAMLINK_COMMAND="${STREAMLINK_COMMAND} --twitch-disable-reruns"
+fi
+
+# Build a command to stream the livestream to the Open Streaming Platform
+FFMPEG_COMMAND="ffmpeg -i - -c copy -f flv ${OSP_STREAM_URL}"
+
+# Execute the commands and print them to the console
+echo "Executing the following commands:"
+echo "${STREAMLINK_COMMAND} ${LIVESTREAM_URL} ${STREAMLINK_QUALITY} | ${FFMPEG_COMMAND}"
+eval "${STREAMLINK_COMMAND} ${LIVESTREAM_URL} ${STREAMLINK_QUALITY} | ${FFMPEG_COMMAND}"
