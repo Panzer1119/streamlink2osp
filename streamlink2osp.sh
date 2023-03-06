@@ -65,5 +65,6 @@ FFMPEG_COMMAND="ffmpeg -i - -c copy -f flv ${OSP_STREAM_URL}"
 
 # Execute the commands and print them to the console
 echo "Executing the following commands:"
-echo "${STREAMLINK_COMMAND} ${LIVESTREAM_URL} ${STREAMLINK_QUALITY} | ${FFMPEG_COMMAND}"
+# Replace the stream key in the command with a placeholder
+echo "${STREAMLINK_COMMAND} ${LIVESTREAM_URL} ${STREAMLINK_QUALITY} | ${FFMPEG_COMMAND/${OSP_STREAM_KEY}/<STREAM_KEY>}"
 eval "${STREAMLINK_COMMAND} ${LIVESTREAM_URL} ${STREAMLINK_QUALITY} | ${FFMPEG_COMMAND}"
