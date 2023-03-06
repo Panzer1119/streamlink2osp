@@ -8,4 +8,4 @@ RUN chmod +x /streamlink2osp.sh
 ENTRYPOINT []
 
 # Run script as main program
-CMD ["/streamlink2osp.sh"]
+CMD ["sh", "/streamlink2osp.sh"]
