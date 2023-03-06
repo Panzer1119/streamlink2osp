@@ -1,7 +1,4 @@
-FROM lscr.io/linuxserver/ffmpeg:5.1.2
-
-# Install the required packages
-RUN apt update && apt install -y streamlink && rm -rf /var/lib/apt/lists/* /var/tmp/*
+FROM rayou/streamlink:5.3.1
 
 # Copy script to container and make it executable
 COPY streamlink2osp.sh /
