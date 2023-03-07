@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/Panzer1119/streamlink2osp/compare/v1.0.0...v1.1.0) (2023-03-07)
+
+
+### Features
+
+* add environment variable FFMPEG_OPTIONS to customize the FFmpeg options ([440bde2](https://github.com/Panzer1119/streamlink2osp/commit/440bde2a150adba90bd4038ae94baa815295d19f))
+* implement environment variable STREAMLINK_ADDITIONAL_OPTIONS ([9a878bc](https://github.com/Panzer1119/streamlink2osp/commit/9a878bc0c1fd62d35e31c6ed9ace478b09245c24))
+
 ## 1.0.0
  (2023-03-07)
 
