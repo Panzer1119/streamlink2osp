@@ -22,7 +22,7 @@ Motivation
 ----------
 
 > **Note**
-> This section has been generated with [ChatGPT](https://chat.openai.com/).
+> This section has been generated with [ChatGPT](https://chat.openai.com/) and manually edited afterwards.
 
 Have you ever wanted to pause or rewind a Twitch livestream while it's playing, only to find out that Twitch does not
 offer this functionality? Or have you come across a streamer who doesn't provide VoDs or has them disabled? This can be
@@ -36,6 +36,14 @@ This is where `streamlink2osp` comes in. By using this tool, you can easily down
 Streamlink, and then upload it to your OSP instance. With configurable environment variables, you can customize the
 quality, disable ads or reruns, and even retry failed streams. So why wait? Start re-streaming your favorite Twitch
 livestreams to OSP today!
+
+Even though Twitch added the ability to pause and rewind livestreams in 2021[^1], it was a limited test phase of 1
+month.
+And it seems like a streamer have had to manually enable this feature[^2], meaning they can leave it disabled as well.
+
+[^1]: https://twitch.uservoice.com/forums/923368-video-features/suggestions/44321271--test-new-options-under-live-video-player
+
+[^2]: https://twitter.com/TwitchSupport/status/1451596501650640908?s=20
 
 Docker Image
 ------------
