@@ -37,8 +37,8 @@ Streamlink, and then upload it to your OSP instance. With configurable environme
 quality, disable ads or reruns, and even retry failed streams. So why wait? Start re-streaming your favorite Twitch
 livestreams to OSP today!
 
-Even though Twitch added the ability to pause and rewind livestreams in 2021[^1], it was a limited test phase of 1
-month.
+Even though Twitch added the ability to pause and rewind livestreams in 2021, it was a limited test phase of 1
+month[^1].
 And it seems like a streamer have had to manually enable this feature[^2], meaning they can leave it disabled as well.
 
 [^1]: https://twitch.uservoice.com/forums/923368-video-features/suggestions/44321271--test-new-options-under-live-video-player
