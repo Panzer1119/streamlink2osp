@@ -81,7 +81,9 @@ fi
 STREAMLINK_COMMAND="${STREAMLINK_COMMAND} ${LIVESTREAM_URL} ${STREAMLINK_QUALITY}"
 
 # Build a command to stream the livestream to the Open Streaming Platform
-FFMPEG_COMMAND="ffmpeg -i - -c copy -f flv ${OSP_STREAM_URL}"
+FFMPEG_COMMAND="ffmpeg -i - -c copy -f flv"
+# Add the Open Streaming Platform stream url
+FFMPEG_COMMAND="${FFMPEG_COMMAND} ${OSP_STREAM_URL}"
 
 # Execute the commands and print them to the console
 echo "Executing the following commands:"
