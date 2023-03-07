@@ -62,6 +62,39 @@ To use streamlink2osp, simply run the following command:
 docker run --rm -d -e OSP_RTMP_FQDN=<FQDN> -e OSP_STREAM_KEY=<KEY> -e LIVESTREAM_URL=<URL> panzer1119/streamlink2osp:latest
 ```
 
+### Automatic Restart
+
+#### Restart Policies
+
+When a livestream interrupts or your internet connection drops the container will exit.
+To prevent this from happening, you can set the restart policy to `on-failure`, `unless-stopped` or `always`:
+
+```bash
+docker run --rm -d --restart unless-stopped -e OSP_RTMP_FQDN=<FQDN> -e OSP_STREAM_KEY=<KEY> -e LIVESTREAM_URL=<URL> panzer1119/streamlink2osp:latest
+```
+
+That way, the container will automatically restart when it exits. So you don't have to worry about missing out on your
+favorite livestreams.
+
+#### Restart Policy `on-failure`
+
+I recommend using `on-failure` as it will only restart the container if it exits with a non-zero exit code:
+
+```bash
+docker run --rm -d --restart on-failure -e OSP_RTMP_FQDN=<FQDN> -e OSP_STREAM_KEY=<KEY> -e LIVESTREAM_URL=<URL> panzer1119/streamlink2osp:latest
+```
+
+> **Note**
+> That way, the container will not restart if ~~the livestream ends gracefully, or~~ you stop it manually.
+
+#### Restart Policy `on-failure:max-retries`
+
+You can set the maximum number of restarts with the `on-failure:max-retries` option to not record forever:
+
+```bash
+docker run --rm -d --restart on-failure:5 -e OSP_RTMP_FQDN=<FQDN> -e OSP_STREAM_KEY=<KEY> -e LIVESTREAM_URL=<URL> panzer1119/streamlink2osp:latest
+```
+
 Environment Variables
 ---------------------
 
