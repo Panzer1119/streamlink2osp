@@ -43,7 +43,7 @@ And it seems like a streamer have had to manually enable this feature[^2], meani
 
 [^1]: https://twitch.uservoice.com/forums/923368-video-features/suggestions/44321271--test-new-options-under-live-video-player
 
-[^2]: https://twitter.com/TwitchSupport/status/1451596501650640908?s=20
+[^2]: https://twitter.com/TwitchSupport/status/1451596501650640908
 
 Docker Image
 ------------
