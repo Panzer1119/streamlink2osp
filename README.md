@@ -17,6 +17,25 @@ OSP is a great tool for streaming video content to the web, but it does not supp
 streaming from sources other than RTMP. This is where streamlink2osp comes in.
 It allows users to stream video content from various sources to OSP using Streamlink.
 
+Motivation
+----------
+
+> **Note**
+> This section has been generated with [ChatGPT](https://chat.openai.com/).
+
+Have you ever wanted to pause or rewind a Twitch livestream while it's playing, only to find out that Twitch does not
+offer this functionality? Or have you come across a streamer who doesn't provide VoDs or has them disabled? This can be
+frustrating, especially if you miss something important or want to review a section of the stream later.
+
+One solution to this problem is to re-stream the Twitch livestream to an Open Streaming Platform (OSP) instance. By
+doing so, you can pause, rewind, or even re-watch the livestream at your own pace. Additionally, re-streaming to OSP
+acts as a recorder, allowing you to capture the livestream in its entirety, even if the streamer doesn't offer VoDs.
+
+This is where `streamlink2osp` comes in. By using this tool, you can easily download the Twitch livestream using
+Streamlink, and then upload it to your OSP instance. With configurable environment variables, you can customize the
+quality, disable ads or reruns, and even retry failed streams. So why wait? Start re-streaming your favorite Twitch
+livestreams to OSP today!
+
 Docker Image
 ------------
 
