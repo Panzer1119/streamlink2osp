@@ -22,6 +22,8 @@ STREAMLINK_RETRY_STREAMS=${STREAMLINK_RETRY_STREAMS:-""}
 STREAMLINK_RETRY_MAX=${STREAMLINK_RETRY_MAX:-""}
 STREAMLINK_RETRY_OPEN=${STREAMLINK_RETRY_OPEN:-""}
 STREAMLINK_ADDITIONAL_OPTIONS=${STREAMLINK_ADDITIONAL_OPTIONS:-""}
+## FFmpeg
+FFMPEG_OPTIONS=${FFMPEG_OPTIONS:-""}
 ## Open Streaming Platform
 OSP_RTMP_FQDN=${OSP_RTMP_FQDN:-""}
 OSP_RTMP_PORT=${OSP_RTMP_PORT:-"1935"}
@@ -81,7 +83,13 @@ fi
 STREAMLINK_COMMAND="${STREAMLINK_COMMAND} ${LIVESTREAM_URL} ${STREAMLINK_QUALITY}"
 
 # Build a command to stream the livestream to the Open Streaming Platform
-FFMPEG_COMMAND="ffmpeg -i - -c copy -f flv"
+FFMPEG_COMMAND="ffmpeg -i -"
+# Set the options to default value if the corresponding environment variable is not set
+if [ -z "${FFMPEG_OPTIONS}" ]; then
+  FFMPEG_OPTIONS="-c copy -f flv"
+fi
+# Add the options
+FFMPEG_COMMAND="${FFMPEG_COMMAND} ${FFMPEG_OPTIONS}"
 # Add the Open Streaming Platform stream url
 FFMPEG_COMMAND="${FFMPEG_COMMAND} ${OSP_STREAM_URL}"
 
