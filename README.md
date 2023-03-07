@@ -1,9 +1,9 @@
 streamlink2osp
 ==============
 
-![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/panzer1119/streamlink2osp/latest)
-![Docker Image Size (tag)](https://img.shields.io/docker/image-size/panzer1119/streamlink2osp/latest)
-![Docker Pulls](https://img.shields.io/docker/pulls/panzer1119/streamlink2osp)
+[![Docker Image Version (tag latest semver)](https://img.shields.io/docker/v/panzer1119/streamlink2osp/latest)](https://hub.docker.com/r/panzer1119/streamlink2osp/tags)
+[![Docker Image Size (tag)](https://img.shields.io/docker/image-size/panzer1119/streamlink2osp/latest)](https://hub.docker.com/r/panzer1119/streamlink2osp/tags?name=latest)
+[![Docker Pulls](https://img.shields.io/docker/pulls/panzer1119/streamlink2osp)](https://hub.docker.com/r/panzer1119/streamlink2osp)
 
 Streamlink2osp is a tool that enables users to stream video content from various sources
 using [Streamlink](https://streamlink.github.io/) directly to
