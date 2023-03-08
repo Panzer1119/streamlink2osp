@@ -147,10 +147,12 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
     echo "TWITCH_CLIENT_ID is not set, will try to retrieve it with the Bearer Token"
   fi
   check_twitch_api_credentials
-  # Check if /tempfs/live exists
-  if [ ! -d "/tempfs/live" ]; then
-    echo "/tempfs/live does not exist"
-    exit 1
+  # If OSP_DELETE_HLS_FILES_ON_NEW_STREAM or OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true check if /tempfs/live exists
+  if [ "${OSP_DELETE_HLS_FILES_ON_NEW_STREAM}" = "true" ] || [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" = "true" ]; then
+    if [ ! -d "/tempfs/live" ]; then
+      echo "/tempfs/live does not exist"
+      exit 1
+    fi
   fi
   # If TWITCH_USER_NAME is not set try to extract the Twitch user name from the livestream url
   if [ -z "${TWITCH_USER_NAME}" ]; then
