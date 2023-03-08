@@ -153,7 +153,7 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
   # If OSP_DELETE_HLS_FILES_ON_NEW_STREAM or OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true check if OSP_LIVE_HLS_DIRECTORY exists
   if [ "${OSP_DELETE_HLS_FILES_ON_NEW_STREAM}" = "true" ] || [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" = "true" ]; then
     if [ ! -d "${OSP_LIVE_HLS_DIRECTORY}" ]; then
-      echo "${OSP_LIVE_HLS_DIRECTORY} does not exist" >&2
+      echo "Directory '${OSP_LIVE_HLS_DIRECTORY}' does not exist" >&2
       exit 1
     fi
   fi
