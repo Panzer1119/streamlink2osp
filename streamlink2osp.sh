@@ -308,7 +308,7 @@ on_stream_start() {
 
   # If the stream is a new stream delete the HLS files
   if [ "${is_new_stream}" = "true" ]; then
-    #echo "New Twitch stream started"
+    echo "New Twitch stream started"
     # If the environment variable OSP_DELETE_HLS_FILES_ON_NEW_STREAM is set to true delete the HLS files
     if [ "${OSP_DELETE_HLS_FILES_ON_NEW_STREAM}" == "true" ]; then
       delete_hls_files
