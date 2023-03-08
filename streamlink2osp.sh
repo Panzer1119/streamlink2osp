@@ -262,7 +262,7 @@ save_stream_started_at() {
 
   # If the started_at timestamp is empty return
   if [ -z "${started_at}" ]; then
-    echo "No Twitch stream found"
+    echo "No running Twitch stream found"
     # Delete TWITCH_STREAM_STARTED_AT_FILE if it exists
     if [ -f "${TWITCH_STREAM_STARTED_AT_FILE}" ]; then
       rm "${TWITCH_STREAM_STARTED_AT_FILE}"
@@ -329,9 +329,9 @@ on_stream_start() {
   local started_at
   started_at=$(get_stream_started_at)
 
-  # If the started_at timestamp is not set return
+  # If the started_at timestamp is empty return
   if [ -z "${started_at}" ]; then
-    echo "Could not get started_at timestamp" >&2
+    echo "No running Twitch stream found"
     return
   fi
 
