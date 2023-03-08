@@ -84,7 +84,7 @@ check_twitch_api_credentials() {
 
   # If the TWITCH_CLIENT_ID is not set set it to the client id retrieved from the bearer token
   if [ -z "${TWITCH_CLIENT_ID}" ]; then
-    echo "Use retrieved Twitch client id: ${client_id}"
+    echo "TWITCH_CLIENT_ID is not set, using retrieved Twitch client id: ${client_id}"
     TWITCH_CLIENT_ID="${client_id}"
   fi
 
@@ -142,9 +142,6 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
   if [ -z "${TWITCH_BEARER_TOKEN}" ]; then
     echo "TWITCH_BEARER_TOKEN is not set" >&2
     exit 1
-  fi
-  if [ -z "${TWITCH_CLIENT_ID}" ]; then
-    echo "TWITCH_CLIENT_ID is not set, will try to retrieve it with the Bearer Token"
   fi
   check_twitch_api_credentials
   # If OSP_DELETE_HLS_FILES_ON_NEW_STREAM or OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true check if /tempfs/live exists
