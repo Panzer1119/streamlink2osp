@@ -320,7 +320,6 @@ on_stream_start() {
   if [ -z "${TWITCH_STREAM_STARTED_AT}" ]; then
     save_stream_started_at
     if [ -z "${TWITCH_STREAM_STARTED_AT}" ]; then
-      echo "Could not get started_at timestamp" >&2
       return
     fi
     is_new_stream="true"
