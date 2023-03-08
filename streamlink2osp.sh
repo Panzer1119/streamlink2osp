@@ -260,6 +260,9 @@ save_stream_started_at() {
 
   # Save the started_at timestamp in a file
   echo "${started_at}" >"${TWITCH_STREAM_STARTED_AT_FILE}"
+  if [ "${DEBUG}" = "true" ]; then
+    echo "Saved Twitch stream started at '${started_at}' to file '${TWITCH_STREAM_STARTED_AT_FILE}'"
+  fi
 }
 
 load_stream_started_at() {
@@ -273,8 +276,9 @@ load_stream_started_at() {
   # Load the started_at timestamp from a file
   local started_at
   started_at=$(cat "${TWITCH_STREAM_STARTED_AT_FILE}")
-
-  echo "Loaded Twitch stream started at: ${started_at}"
+  if [ "${DEBUG}" = "true" ]; then
+    echo "Loaded Twitch stream started at '${started_at}' from file '${TWITCH_STREAM_STARTED_AT_FILE}'"
+  fi
 
   # Save the started_at timestamp in an environment variable
   export TWITCH_STREAM_STARTED_AT="${started_at}"
