@@ -63,6 +63,11 @@ TWITCH_ENABLE_API=${TWITCH_ENABLE_API:-"false"}
 TWITCH_STREAM_STARTED_AT=${TWITCH_STREAM_STARTED_AT:-""}
 TWITCH_STREAM_STARTED_AT_FILE="${OSP_LIVE_HLS_DIRECTORY}/${OSP_STREAM_KEY}.started_at"
 
+# If debug is enabled print that we are in debug mode
+if [ "${DEBUG}" = "true" ]; then
+  echo "Debug mode is enabled"
+fi
+
 check_twitch_api_credentials() {
   # Validate bearer token and retrieve client id
   local response
