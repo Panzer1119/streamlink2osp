@@ -153,7 +153,9 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
   fi
   # If TWITCH_USER_NAME is not set try to extract the Twitch user name from the livestream url
   if [ -z "${TWITCH_USER_NAME}" ]; then
-    TWITCH_USER_NAME=$(echo "${LIVESTREAM_URL}" | grep -oP "(?<=twitch.tv/)[^/]+")
+    TWITCH_USER_NAME="${LIVESTREAM_URL#https://twitch.tv/}"
+    TWITCH_USER_NAME="${TWITCH_USER_NAME%/}"
+    echo "TWITCH_USER_NAME is not set, using extracted Twitch user name: '${TWITCH_USER_NAME}'"
   fi
   # Check if TWITCH_USER_NAME is set
   if [ -z "${TWITCH_USER_NAME}" ]; then
