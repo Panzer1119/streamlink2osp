@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.2.2](https://github.com/Panzer1119/streamlink2osp/compare/v1.2.1...v1.2.2) (2023-03-08)
+
+
+### Bug Fixes
+
+* add a check if the commands curl and jq are installed when enabling the Twitch API ([5285abd](https://github.com/Panzer1119/streamlink2osp/commit/5285abd72a6e62131f435ca19b1643da1c47476d))
+* install curl and jq in docker image ([902fb56](https://github.com/Panzer1119/streamlink2osp/commit/902fb5602a9a90a3dfc25ef9d0da6de8547adf95))
+* skip on_stream_start if Twitch API is not enabled ([2a5f107](https://github.com/Panzer1119/streamlink2osp/commit/2a5f107d9d928dcd6ce6d4e98ea9c165b6814adb))
+
 ### [1.2.1](https://github.com/Panzer1119/streamlink2osp/compare/v1.2.0...v1.2.1) (2023-03-08)
 
 ## [1.2.0](https://github.com/Panzer1119/streamlink2osp/compare/v1.1.0...v1.2.0) (2023-03-08)
