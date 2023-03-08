@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/Panzer1119/streamlink2osp/compare/v1.1.0...v1.2.0) (2023-03-08)
+
+
+### Features
+
+* add a check to validate the twitch api credentials and made the client id optional by retrieving it with the bearer token ([d232c1a](https://github.com/Panzer1119/streamlink2osp/commit/d232c1aed75cc41c1fcfa6c6f8d321ab017eb2c9))
+* implement deletion of old hls files on a new stream ([3d2ee01](https://github.com/Panzer1119/streamlink2osp/commit/3d2ee01f759b195a13ae60c3e125093dc679bed8))
+* use the Twitch API to retrieve data about the livestream and add an option to remove old HLS files ([e487ea7](https://github.com/Panzer1119/streamlink2osp/commit/e487ea7fb6404dd6c36da99f12abb843070aa2ec))
+
 ## [1.1.0](https://github.com/Panzer1119/streamlink2osp/compare/v1.0.0...v1.1.0) (2023-03-07)
 
 
