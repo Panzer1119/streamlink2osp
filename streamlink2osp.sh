@@ -258,6 +258,11 @@ load_stream_started_at() {
 }
 
 on_stream_start() {
+  # Return if TWITCH_ENABLE_API is not true
+  if [ "${TWITCH_ENABLE_API}" != "true" ]; then
+    return
+  fi
+
   # Load the started_at timestamp
   load_stream_started_at
 
