@@ -139,6 +139,11 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
     echo "jq could not be found"
     exit
   fi
+  # Check if the LIVESTREAM_URL is a Twitch livestream url
+  if ! echo "${LIVESTREAM_URL}" | grep -q "twitch.tv"; then
+    echo "LIVESTREAM_URL is not a Twitch livestream url"
+    exit 1
+  fi
   if [ -z "${TWITCH_BEARER_TOKEN}" ]; then
     echo "TWITCH_BEARER_TOKEN is not set" >&2
     exit 1
