@@ -93,6 +93,17 @@ if [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" = "true" ]; then
 fi
 ### Check if the environment variables for the Twitch API are set if TWITCH_ENABLE_API is true
 if [ "${TWITCH_ENABLE_API}" = "true" ]; then
+  # Check if the required commands are installed
+  ## curl
+  if ! command -v curl &>/dev/null; then
+    echo "curl could not be found"
+    exit
+  fi
+  ## jq
+  if ! command -v jq &>/dev/null; then
+    echo "jq could not be found"
+    exit
+  fi
   if [ -z "${TWITCH_BEARER_TOKEN}" ]; then
     echo "TWITCH_BEARER_TOKEN is not set" >&2
     exit 1
