@@ -19,12 +19,12 @@
 # Check if the required commands are installed
 ## Streamlink
 if ! command -v streamlink &>/dev/null; then
-  echo "streamlink could not be found"
+  echo "streamlink could not be found" >&2
   exit
 fi
 ## FFmpeg
 if ! command -v ffmpeg &>/dev/null; then
-  echo "ffmpeg could not be found"
+  echo "ffmpeg could not be found" >&2
   exit
 fi
 
@@ -69,7 +69,7 @@ check_twitch_api_credentials() {
 
   # If the status is 401 the bearer token is invalid or expired
   if [ "${status}" = "401" ]; then
-    echo "Bearer token is invalid or expired"
+    echo "Bearer token is invalid or expired" >&2
     exit 1
   fi
 
@@ -78,7 +78,7 @@ check_twitch_api_credentials() {
 
   # If the client id is empty the bearer token is invalid
   if [ -z "${client_id}" ]; then
-    echo "Bearer token may be invalid, because no client id was returned"
+    echo "Bearer token may be invalid, because no client id was returned" >&2
     exit 1
   fi
 
@@ -90,7 +90,7 @@ check_twitch_api_credentials() {
 
   # If the TWITCH_CLIENT_ID is not equal to the client id retrieved from the bearer token the bearer token is not valid for the client id
   if [ "${TWITCH_CLIENT_ID}" != "${client_id}" ]; then
-    echo "Bearer token is not valid for the client id, it is valid for ${client_id}"
+    echo "Bearer token is not valid for the client id, it is valid for ${client_id}" >&2
     exit 1
   fi
 }
@@ -98,24 +98,24 @@ check_twitch_api_credentials() {
 # Check if environment variables are set
 ## Streamlink
 if [ -z "${LIVESTREAM_URL}" ]; then
-  echo "LIVESTREAM_URL is not set"
+  echo "LIVESTREAM_URL is not set" >&2
   exit 1
 fi
 if [ -z "${STREAMLINK_QUALITY}" ]; then
-  echo "STREAMLINK_QUALITY is not set"
+  echo "STREAMLINK_QUALITY is not set" >&2
   exit 1
 fi
 ## Open Streaming Platform
 if [ -z "${OSP_RTMP_FQDN}" ]; then
-  echo "OSP_RTMP_FQDN is not set"
+  echo "OSP_RTMP_FQDN is not set" >&2
   exit 1
 fi
 if [ -z "${OSP_RTMP_PORT}" ]; then
-  echo "OSP_RTMP_PORT is not set"
+  echo "OSP_RTMP_PORT is not set" >&2
   exit 1
 fi
 if [ -z "${OSP_STREAM_KEY}" ]; then
-  echo "OSP_STREAM_KEY is not set"
+  echo "OSP_STREAM_KEY is not set" >&2
   exit 1
 fi
 ## Twitch
@@ -131,17 +131,17 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
   # Check if the required commands are installed
   ## curl
   if ! command -v curl &>/dev/null; then
-    echo "curl could not be found"
+    echo "curl could not be found" >&2
     exit
   fi
   ## jq
   if ! command -v jq &>/dev/null; then
-    echo "jq could not be found"
+    echo "jq could not be found" >&2
     exit
   fi
   # Check if the LIVESTREAM_URL is a Twitch livestream url
   if ! echo "${LIVESTREAM_URL}" | grep -q "twitch.tv"; then
-    echo "LIVESTREAM_URL is not a Twitch livestream url"
+    echo "LIVESTREAM_URL is not a Twitch livestream url" >&2
     exit 1
   fi
   if [ -z "${TWITCH_BEARER_TOKEN}" ]; then
@@ -152,7 +152,7 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
   # If OSP_DELETE_HLS_FILES_ON_NEW_STREAM or OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true check if /tempfs/live exists
   if [ "${OSP_DELETE_HLS_FILES_ON_NEW_STREAM}" = "true" ] || [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" = "true" ]; then
     if [ ! -d "/tempfs/live" ]; then
-      echo "/tempfs/live does not exist"
+      echo "/tempfs/live does not exist" >&2
       exit 1
     fi
   fi
@@ -164,7 +164,7 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
   fi
   # Check if TWITCH_USER_NAME is set
   if [ -z "${TWITCH_USER_NAME}" ]; then
-    echo "TWITCH_USER_NAME is not set"
+    echo "TWITCH_USER_NAME is not set" >&2
     exit 1
   fi
 fi
