@@ -60,6 +60,41 @@ TWITCH_ENABLE_API=${TWITCH_ENABLE_API:-"false"}
 TWITCH_STREAM_STARTED_AT=${TWITCH_STREAM_STARTED_AT:-""}
 TWITCH_STREAM_STARTED_AT_FILE="/tempfs/live/${OSP_STREAM_KEY}.started_at"
 
+check_twitch_api_credentials() {
+  # Validate bearer token and retrieve client ID
+  local response
+  response=$(curl -s -H "Authorization: Bearer ${TWITCH_BEARER_TOKEN}" -X GET "https://id.twitch.tv/oauth2/validate")
+  local status
+  status=$(echo "${response}" | jq -r '.status')
+
+  # If the status is 401 the bearer token is invalid or expired
+  if [ "${status}" = "401" ]; then
+    echo "Bearer token is invalid or expired"
+    exit 1
+  fi
+
+  local client_id
+  client_id=$(echo "${response}" | jq -r '.client_id')
+
+  # If the client ID is empty the bearer token is invalid
+  if [ -z "${client_id}" ]; then
+    echo "Bearer token may be invalid, because no client ID was returned"
+    exit 1
+  fi
+
+  # If the TWITCH_CLIENT_ID is not set set it to the client ID retrieved from the bearer token
+  if [ -z "${TWITCH_CLIENT_ID}" ]; then
+    echo "Use retrieved Twitch Client ID: ${client_id}"
+    TWITCH_CLIENT_ID="${client_id}"
+  fi
+
+  # If the TWITCH_CLIENT_ID is not equal to the client ID retrieved from the bearer token the bearer token is not valid for the client ID
+  if [ "${TWITCH_CLIENT_ID}" != "${client_id}" ]; then
+    echo "Bearer token is not valid for the client ID, it is valid for ${client_id}"
+    exit 1
+  fi
+}
+
 # Check if environment variables are set
 ## Streamlink
 if [ -z "${LIVESTREAM_URL}" ]; then
@@ -127,41 +162,6 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
     exit 1
   fi
 fi
-
-check_twitch_api_credentials() {
-  # Validate bearer token and retrieve client ID
-  local response
-  response=$(curl -s -H "Authorization: Bearer ${TWITCH_BEARER_TOKEN}" -X GET "https://id.twitch.tv/oauth2/validate")
-  local status
-  status=$(echo "${response}" | jq -r '.status')
-
-  # If the status is 401 the bearer token is invalid or expired
-  if [ "${status}" = "401" ]; then
-    echo "Bearer token is invalid or expired"
-    exit 1
-  fi
-
-  local client_id
-  client_id=$(echo "${response}" | jq -r '.client_id')
-
-  # If the client ID is empty the bearer token is invalid
-  if [ -z "${client_id}" ]; then
-    echo "Bearer token may be invalid, because no client ID was returned"
-    exit 1
-  fi
-
-  # If the TWITCH_CLIENT_ID is not set set it to the client ID retrieved from the bearer token
-  if [ -z "${TWITCH_CLIENT_ID}" ]; then
-    echo "Use retrieved Twitch Client ID: ${client_id}"
-    TWITCH_CLIENT_ID="${client_id}"
-  fi
-
-  # If the TWITCH_CLIENT_ID is not equal to the client ID retrieved from the bearer token the bearer token is not valid for the client ID
-  if [ "${TWITCH_CLIENT_ID}" != "${client_id}" ]; then
-    echo "Bearer token is not valid for the client ID, it is valid for ${client_id}"
-    exit 1
-  fi
-}
 
 # Build a command with flags to disable twitch ads and reruns if the corresponding environment variables are set
 STREAMLINK_COMMAND="streamlink --stdout"
