@@ -260,6 +260,19 @@ save_stream_started_at() {
   local started_at
   started_at=$(get_stream_started_at)
 
+  # If the started_at timestamp is empty return
+  if [ -z "${started_at}" ]; then
+    echo "No Twitch stream found"
+    # Delete TWITCH_STREAM_STARTED_AT_FILE if it exists
+    if [ -f "${TWITCH_STREAM_STARTED_AT_FILE}" ]; then
+      rm "${TWITCH_STREAM_STARTED_AT_FILE}"
+      if [ "${DEBUG}" = "true" ]; then
+        echo "Deleted file '${TWITCH_STREAM_STARTED_AT_FILE}'"
+      fi
+    fi
+    return
+  fi
+
   echo "Current Twitch stream started at: ${started_at}"
 
   # Save the started_at timestamp in an environment variable
