@@ -51,6 +51,8 @@ OSP_LIVE_HLS_DIRECTORY=${OSP_LIVE_HLS_DIRECTORY:-"/tempfs/live"}
 TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID:-""}
 TWITCH_BEARER_TOKEN=${TWITCH_BEARER_TOKEN:-""}
 TWITCH_USER_NAME=${TWITCH_USER_NAME:-""}
+## Misc
+DEBUG=${DEBUG:-"false"}
 
 # Internal variables
 ## Open Streaming Platform
