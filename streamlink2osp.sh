@@ -46,6 +46,7 @@ OSP_RTMP_PORT=${OSP_RTMP_PORT:-"1935"}
 OSP_STREAM_KEY=${OSP_STREAM_KEY:-""}
 OSP_DELETE_HLS_FILES_ON_NEW_STREAM=${OSP_DELETE_HLS_FILES_ON_NEW_STREAM:-"false"}
 OSP_DELETE_HLS_FILES_AFTER_STREAM_END=${OSP_DELETE_HLS_FILES_AFTER_STREAM_END:-"false"}
+OSP_LIVE_HLS_DIRECTORY=${OSP_LIVE_HLS_DIRECTORY:-"/tempfs/live"}
 ## Twitch
 TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID:-""}
 TWITCH_BEARER_TOKEN=${TWITCH_BEARER_TOKEN:-""}
@@ -54,11 +55,11 @@ TWITCH_USER_NAME=${TWITCH_USER_NAME:-""}
 # Internal variables
 ## Open Streaming Platform
 OSP_STREAM_URL="rtmp://${OSP_RTMP_FQDN}:${OSP_RTMP_PORT}/stream/${OSP_STREAM_KEY}"
-OSP_STREAM_LIVE_HLS_DIRECTORY="/tempfs/live/${OSP_STREAM_KEY}"
+OSP_STREAM_LIVE_HLS_DIRECTORY="${OSP_LIVE_HLS_DIRECTORY}/${OSP_STREAM_KEY}"
 ## Twitch
 TWITCH_ENABLE_API=${TWITCH_ENABLE_API:-"false"}
 TWITCH_STREAM_STARTED_AT=${TWITCH_STREAM_STARTED_AT:-""}
-TWITCH_STREAM_STARTED_AT_FILE="/tempfs/live/${OSP_STREAM_KEY}.started_at"
+TWITCH_STREAM_STARTED_AT_FILE="${OSP_LIVE_HLS_DIRECTORY}/${OSP_STREAM_KEY}.started_at"
 
 check_twitch_api_credentials() {
   # Validate bearer token and retrieve client id
@@ -149,10 +150,10 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
     exit 1
   fi
   check_twitch_api_credentials
-  # If OSP_DELETE_HLS_FILES_ON_NEW_STREAM or OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true check if /tempfs/live exists
+  # If OSP_DELETE_HLS_FILES_ON_NEW_STREAM or OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true check if OSP_LIVE_HLS_DIRECTORY exists
   if [ "${OSP_DELETE_HLS_FILES_ON_NEW_STREAM}" = "true" ] || [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" = "true" ]; then
-    if [ ! -d "/tempfs/live" ]; then
-      echo "/tempfs/live does not exist" >&2
+    if [ ! -d "${OSP_LIVE_HLS_DIRECTORY}" ]; then
+      echo "${OSP_LIVE_HLS_DIRECTORY} does not exist" >&2
       exit 1
     fi
   fi
