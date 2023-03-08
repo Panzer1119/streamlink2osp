@@ -44,10 +44,19 @@ FFMPEG_OPTIONS=${FFMPEG_OPTIONS:-""}
 OSP_RTMP_FQDN=${OSP_RTMP_FQDN:-""}
 OSP_RTMP_PORT=${OSP_RTMP_PORT:-"1935"}
 OSP_STREAM_KEY=${OSP_STREAM_KEY:-""}
+OSP_DELETE_HLS_FILES_AFTER_STREAM_END=${OSP_DELETE_HLS_FILES_AFTER_STREAM_END:-"false"}
+## Twitch
+TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID:-""}
+TWITCH_BEARER_TOKEN=${TWITCH_BEARER_TOKEN:-""}
+TWITCH_USER_NAME=${TWITCH_USER_NAME:-""}
 
-# Combine some variables
+# Internal variables
 ## Open Streaming Platform
 OSP_STREAM_URL="rtmp://${OSP_RTMP_FQDN}:${OSP_RTMP_PORT}/stream/${OSP_STREAM_KEY}"
+OSP_STREAM_LIVE_HLS_DIRECTORY="/tempfs/live/${OSP_STREAM_KEY}"
+## Twitch
+TWITCH_ENABLE_API=${TWITCH_ENABLE_API:-"false"}
+TWITCH_STREAM_STARTED_AT=${TWITCH_STREAM_STARTED_AT:-""}
 
 # Check if environment variables are set
 ## Streamlink
@@ -71,6 +80,36 @@ fi
 if [ -z "${OSP_STREAM_KEY}" ]; then
   echo "OSP_STREAM_KEY is not set"
   exit 1
+fi
+## Twitch
+### Set TWITCH_ENABLE_API to true if OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true
+if [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" = "true" ]; then
+  TWITCH_ENABLE_API="true"
+fi
+### Check if the environment variables for the Twitch API are set if TWITCH_ENABLE_API is true
+if [ "${TWITCH_ENABLE_API}" = "true" ]; then
+  if [ -z "${TWITCH_CLIENT_ID}" ]; then
+    echo "TWITCH_CLIENT_ID is not set"
+    exit 1
+  fi
+  if [ -z "${TWITCH_BEARER_TOKEN}" ]; then
+    echo "TWITCH_BEARER_TOKEN is not set"
+    exit 1
+  fi
+  # Check if /tempfs/live exists
+  if [ ! -d "/tempfs/live" ]; then
+    echo "/tempfs/live does not exist"
+    exit 1
+  fi
+  # If TWITCH_USER_NAME is not set try to extract the Twitch user name from the livestream url
+  if [ -z "${TWITCH_USER_NAME}" ]; then
+    TWITCH_USER_NAME=$(echo "${LIVESTREAM_URL}" | grep -oP "(?<=twitch.tv/)[^/]+")
+  fi
+  # Check if TWITCH_USER_NAME is set
+  if [ -z "${TWITCH_USER_NAME}" ]; then
+    echo "TWITCH_USER_NAME is not set"
+    exit 1
+  fi
 fi
 
 # Build a command with flags to disable twitch ads and reruns if the corresponding environment variables are set
@@ -109,8 +148,90 @@ FFMPEG_COMMAND="${FFMPEG_COMMAND} ${FFMPEG_OPTIONS}"
 # Add the Open Streaming Platform stream url
 FFMPEG_COMMAND="${FFMPEG_COMMAND} ${OSP_STREAM_URL}"
 
+get_streams() {
+  # Make HTTP request to Twitch API to get the active streams of the streamer
+  local response
+  response=$(curl -s -H "Authorization: Bearer ${TWITCH_BEARER_TOKEN}" \
+    -H "Client-ID: ${TWITCH_CLIENT_ID}" \
+    -X GET "https://api.twitch.tv/helix/streams?user_login=${TWITCH_USER_NAME}")
+  echo "${response}"
+}
+
+save_stream_started_at() {
+  # Get the streams of the streamer
+  local response
+  response=$(get_streams)
+  if [ "${DEBUG}" = "true" ]; then
+    echo "${response}" | jq '.'
+  fi
+
+  # Parse JSON response with jq
+  local is_live
+  is_live=$(echo "${response}" | jq -r '.data | length')
+  local stream_type
+  stream_type=$(echo "${response}" | jq -r '.data[0]?.type')
+  local started_at
+  started_at=$(echo "${response}" | jq -r '.data[0]?.started_at')
+
+  # Return if the stream is not live
+  if [ "${is_live}" = "0" ]; then
+    return
+  fi
+
+  # Return if the stream type is not live
+  if [ "${stream_type}" != "live" ]; then
+    return
+  fi
+
+  # Save the started_at timestamp in an environment variable
+  export TWITCH_STREAM_STARTED_AT="${started_at}"
+  echo "Twitch stream started at: ${TWITCH_STREAM_STARTED_AT}"
+}
+
+on_stream_end() {
+  # Return if TWITCH_ENABLE_API is not true
+  if [ "${TWITCH_ENABLE_API}" != "true" ]; then
+    return
+  fi
+
+  # Get the streams of the streamer
+  local response
+  response=$(get_streams)
+  if [ "${DEBUG}" = "true" ]; then
+    echo "${response}" | jq '.'
+  fi
+
+  # Parse JSON response with jq
+  local is_live
+  is_live=$(echo "${response}" | jq -r '.data | length')
+  local stream_type
+  stream_type=$(echo "${response}" | jq -r '.data[0]?.type')
+  local user_name
+  user_name=$(echo "${response}" | jq -r '.data[0]?.user_name')
+  local started_at
+  started_at=$(echo "${response}" | jq -r '.data[0]?.started_at')
+
+  # Check if the stream is the same stream
+  if [ "${is_live}" = "1" ] && [ "${stream_type}" = "live" ] && [ "${started_at}" = "${TWITCH_STREAM_STARTED_AT}" ]; then
+    echo "User '${user_name}' is still live"
+  else
+    echo "User '${user_name}' is no longer live"
+    # If the stream is not the same stream, delete all hls segments from the Open Streaming Platform
+    if [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" == "true" ]; then
+      delete_hls_files
+    fi
+  fi
+}
+
+delete_hls_files() {
+  # Delete all files in OSP_STREAM_LIVE_HLS_DIRECTORY using find
+  find "${OSP_STREAM_LIVE_HLS_DIRECTORY}" -type f -delete
+}
+
 # Execute the commands and print them to the console
 echo "Executing the following commands:"
 # Replace the stream key in the command with a placeholder
 echo "${STREAMLINK_COMMAND} | ${FFMPEG_COMMAND/${OSP_STREAM_KEY}/<STREAM_KEY>}"
 eval "${STREAMLINK_COMMAND} | ${FFMPEG_COMMAND}"
+# Execute the on_stream_end function when the script is about to exit
+on_stream_end
