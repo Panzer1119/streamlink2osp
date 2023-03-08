@@ -44,6 +44,7 @@ FFMPEG_OPTIONS=${FFMPEG_OPTIONS:-""}
 OSP_RTMP_FQDN=${OSP_RTMP_FQDN:-""}
 OSP_RTMP_PORT=${OSP_RTMP_PORT:-"1935"}
 OSP_STREAM_KEY=${OSP_STREAM_KEY:-""}
+OSP_DELETE_HLS_FILES_ON_NEW_STREAM=${OSP_DELETE_HLS_FILES_ON_NEW_STREAM:-"false"}
 OSP_DELETE_HLS_FILES_AFTER_STREAM_END=${OSP_DELETE_HLS_FILES_AFTER_STREAM_END:-"false"}
 ## Twitch
 TWITCH_CLIENT_ID=${TWITCH_CLIENT_ID:-""}
@@ -57,6 +58,7 @@ OSP_STREAM_LIVE_HLS_DIRECTORY="/tempfs/live/${OSP_STREAM_KEY}"
 ## Twitch
 TWITCH_ENABLE_API=${TWITCH_ENABLE_API:-"false"}
 TWITCH_STREAM_STARTED_AT=${TWITCH_STREAM_STARTED_AT:-""}
+TWITCH_STREAM_STARTED_AT_FILE="/tempfs/live/${OSP_STREAM_KEY}.started_at"
 
 # Check if environment variables are set
 ## Streamlink
@@ -82,7 +84,10 @@ if [ -z "${OSP_STREAM_KEY}" ]; then
   exit 1
 fi
 ## Twitch
-### Set TWITCH_ENABLE_API to true if OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true
+### Set TWITCH_ENABLE_API to true if OSP_DELETE_HLS_FILES_ON_NEW_STREAM or OSP_DELETE_HLS_FILES_AFTER_STREAM_END is true
+if [ "${OSP_DELETE_HLS_FILES_ON_NEW_STREAM}" = "true" ]; then
+  TWITCH_ENABLE_API="true"
+fi
 if [ "${OSP_DELETE_HLS_FILES_AFTER_STREAM_END}" = "true" ]; then
   TWITCH_ENABLE_API="true"
 fi
@@ -157,13 +162,10 @@ get_streams() {
   echo "${response}"
 }
 
-save_stream_started_at() {
+get_stream_started_at() {
   # Get the streams of the streamer
   local response
   response=$(get_streams)
-  if [ "${DEBUG}" = "true" ]; then
-    echo "${response}" | jq '.'
-  fi
 
   # Parse JSON response with jq
   local is_live
@@ -175,17 +177,91 @@ save_stream_started_at() {
 
   # Return if the stream is not live
   if [ "${is_live}" = "0" ]; then
+    echo ""
     return
   fi
 
   # Return if the stream type is not live
   if [ "${stream_type}" != "live" ]; then
+    echo ""
     return
   fi
 
+  echo "${started_at}"
+}
+
+save_stream_started_at() {
+  # Get the started_at timestamp
+  local started_at
+  started_at=$(get_stream_started_at)
+
+  echo "Current Twitch stream started at: ${started_at}"
+
   # Save the started_at timestamp in an environment variable
   export TWITCH_STREAM_STARTED_AT="${started_at}"
-  echo "Twitch stream started at: ${TWITCH_STREAM_STARTED_AT}"
+
+  # Save the started_at timestamp in a file
+  echo "${started_at}" >"${TWITCH_STREAM_STARTED_AT_FILE}"
+}
+
+load_stream_started_at() {
+  # If the file does not exist return
+  if [ ! -f "${TWITCH_STREAM_STARTED_AT_FILE}" ]; then
+    # Clear the started_at timestamp in an environment variable
+    export TWITCH_STREAM_STARTED_AT=""
+    return
+  fi
+
+  # Load the started_at timestamp from a file
+  local started_at
+  started_at=$(cat "${TWITCH_STREAM_STARTED_AT_FILE}")
+
+  echo "Loaded Twitch stream started at: ${started_at}"
+
+  # Save the started_at timestamp in an environment variable
+  export TWITCH_STREAM_STARTED_AT="${started_at}"
+}
+
+on_stream_start() {
+  # Load the started_at timestamp
+  load_stream_started_at
+
+  local is_new_stream
+  is_new_stream="false"
+
+  # If the started_at timestamp is not set save it
+  if [ -z "${TWITCH_STREAM_STARTED_AT}" ]; then
+    save_stream_started_at
+    if [ -z "${TWITCH_STREAM_STARTED_AT}" ]; then
+      echo "Could not get started_at timestamp" >&2
+      return
+    fi
+    is_new_stream="true"
+  fi
+
+  # Get the started_at timestamp
+  local started_at
+  started_at=$(get_stream_started_at)
+
+  # If the started_at timestamp is not set return
+  if [ -z "${started_at}" ]; then
+    echo "Could not get started_at timestamp" >&2
+    return
+  fi
+
+  # If the started_at timestamp is different set is_new_stream to true
+  if [ "${started_at}" != "${TWITCH_STREAM_STARTED_AT}" ]; then
+    is_new_stream="true"
+  fi
+
+  # If the stream is a new stream delete the HLS files
+  if [ "${is_new_stream}" = "true" ]; then
+    #echo "New Twitch stream started"
+    # If the environment variable OSP_DELETE_HLS_FILES_ON_NEW_STREAM is set to true delete the HLS files
+    if [ "${OSP_DELETE_HLS_FILES_ON_NEW_STREAM}" == "true" ]; then
+      delete_hls_files
+    fi
+  fi
 }
 
 on_stream_end() {
@@ -224,10 +300,13 @@ on_stream_end() {
 }
 
 delete_hls_files() {
+  echo "Deleting old HLS files in '${OSP_STREAM_LIVE_HLS_DIRECTORY}'"
+
   # Delete all files in OSP_STREAM_LIVE_HLS_DIRECTORY using find
   find "${OSP_STREAM_LIVE_HLS_DIRECTORY}" -type f -delete
 }
 
+on_stream_start
 # Execute the commands and print them to the console
 echo "Executing the following commands:"
 # Replace the stream key in the command with a placeholder
