@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/Panzer1119/streamlink2osp/compare/v1.2.2...v1.3.0) (2023-03-08)
+
+
+### Features
+
+* add environment variable DEBUG ([e19e84a](https://github.com/Panzer1119/streamlink2osp/commit/e19e84ab4724713773fc91d53e702c73a48c621b))
+* convert hardcoded /tempfs/live directory into environment variable OSP_LIVE_HLS_DIRECTORY ([38cdc52](https://github.com/Panzer1119/streamlink2osp/commit/38cdc522ba00f77608a3cc97f8bc7748d77db519))
+
+
+### Bug Fixes
+
+* add a check if the LIVESTREAM_URL is even a Twitch livestream url when enabling the Twitch API ([03b93e3](https://github.com/Panzer1119/streamlink2osp/commit/03b93e3406ce401a628e834da7467c92ecb6afb3))
+* define function check_twitch_api_credentials before it is called ([ee37429](https://github.com/Panzer1119/streamlink2osp/commit/ee374295f45a1303202dbc427b0589fc2890d83c))
+* echo warnings or errors to stderr ([3a7c246](https://github.com/Panzer1119/streamlink2osp/commit/3a7c2462c70d3122e805b7fd4ec2cab896e0ced8))
+* extraction of TWITCH_USER_NAME from LIVESTREAM_URL ([314e65c](https://github.com/Panzer1119/streamlink2osp/commit/314e65c01e2cd56a18e91ecb3d115c81f9dc0673))
+* only check if /tempfs/live exists if one of the options to delete old hls files is enabled ([0d7970b](https://github.com/Panzer1119/streamlink2osp/commit/0d7970bbe1270fb900c8dda1fb5867a04b3a9de3))
+* return from save_stream_started_at if no started at timestamp returned ([fcae529](https://github.com/Panzer1119/streamlink2osp/commit/fcae52962562891d7b04a517fbea6a1bb81f4f3c))
+* skip save_stream_started_at if does not OSP_LIVE_HLS_DIRECTORY exist ([199505b](https://github.com/Panzer1119/streamlink2osp/commit/199505b46c89a9dc1608eb3dbbf691cf32605955))
+
 ### [1.2.2](https://github.com/Panzer1119/streamlink2osp/compare/v1.2.1...v1.2.2) (2023-03-08)
 
 
