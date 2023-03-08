@@ -244,6 +244,11 @@ get_stream_started_at() {
 }
 
 save_stream_started_at() {
+  if [ ! -d "${OSP_LIVE_HLS_DIRECTORY}" ]; then
+    echo "Directory '${OSP_LIVE_HLS_DIRECTORY}' does not exist" >&2
+    return
+  fi
+
   # Get the started_at timestamp
   local started_at
   started_at=$(get_stream_started_at)
