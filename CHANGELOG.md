@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/Panzer1119/streamlink2osp/compare/v1.3.0...v1.3.1) (2023-03-09)
+
+
+### Bug Fixes
+
+* temporary directory use /tmpfs instead of /tempfs ([899136c](https://github.com/Panzer1119/streamlink2osp/commit/899136c7a2d6dbf9eab29633002b0c5f160a5410))
+
 ## [1.3.0](https://github.com/Panzer1119/streamlink2osp/compare/v1.2.2...v1.3.0) (2023-03-08)
 
 
