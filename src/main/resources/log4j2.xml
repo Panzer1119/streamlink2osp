@@ -1,0 +1,37 @@
+<Configuration monitorInterval="60">
+    <Properties>
+        <Property name="log-path">PropertiesConfiguration</Property>
+    </Properties>
+    <Appenders>
+        <Console name="Console-Appender" target="SYSTEM_OUT">
+            <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="ACCEPT"/>
+            <PatternLayout>
+                <pattern>
+                    [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%20C{1}] %msg%n
+                </pattern>>
+            </PatternLayout>
+        </Console>
+        <Console name="Console-Appender-Error" target="SYSTEM_ERR">
+            <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout>
+                <pattern>
+                    [%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%20C{1}] %msg%n
+                </pattern>>
+            </PatternLayout>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.github.twitch4j" level="warn" additivity="false">
+            <AppenderRef ref="Console-Appender-Error" level="warn"/>
+            <AppenderRef ref="Console-Appender"/>
+        </Logger>
+        <Logger name="de.codemakers" level="all" additivity="false">
+            <AppenderRef ref="Console-Appender-Error" level="warn"/>
+            <AppenderRef ref="Console-Appender"/>
+        </Logger>
+        <Root level="info">
+            <AppenderRef ref="Console-Appender-Error" level="warn"/>
+            <AppenderRef ref="Console-Appender"/>
+        </Root>
+    </Loggers>
+</Configuration>
