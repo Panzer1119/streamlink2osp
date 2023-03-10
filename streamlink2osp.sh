@@ -222,6 +222,13 @@ get_streams() {
   echo "${response}"
 }
 
+#######################################
+# Returns the timestamp when the stream started
+# Arguments:
+#  None
+# Returns:
+#   Timestamp when the stream started
+#######################################
 get_stream_started_at() {
   # Get the streams of the streamer
   local response
