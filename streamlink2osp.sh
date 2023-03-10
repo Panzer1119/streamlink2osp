@@ -24,7 +24,7 @@ if ! command -v streamlink &>/dev/null; then
 fi
 ## FFmpeg
 if ! command -v ffmpeg &>/dev/null; then
-  echo "ffmpeg could not be found" >&2
+  echo "FFmpeg could not be found" >&2
   exit
 fi
 
@@ -90,7 +90,7 @@ check_twitch_api_credentials() {
     exit 1
   fi
 
-  # If the TWITCH_CLIENT_ID is not set set it to the client id retrieved from the bearer token
+  # If the TWITCH_CLIENT_ID is not set, set it to the client id retrieved from the bearer token
   if [ -z "${TWITCH_CLIENT_ID}" ]; then
     echo "TWITCH_CLIENT_ID is not set, using retrieved Twitch client id: ${client_id}"
     TWITCH_CLIENT_ID="${client_id}"
@@ -164,11 +164,11 @@ if [ "${TWITCH_ENABLE_API}" = "true" ]; then
       exit 1
     fi
   fi
-  # If TWITCH_USER_NAME is not set try to extract the Twitch user name from the livestream url
+  # If TWITCH_USER_NAME is not set try to extract the Twitch username from the livestream url
   if [ -z "${TWITCH_USER_NAME}" ]; then
     TWITCH_USER_NAME="${LIVESTREAM_URL#https://twitch.tv/}"
     TWITCH_USER_NAME="${TWITCH_USER_NAME%/}"
-    echo "TWITCH_USER_NAME is not set, using extracted Twitch user name: '${TWITCH_USER_NAME}'"
+    echo "TWITCH_USER_NAME is not set, using extracted Twitch username: '${TWITCH_USER_NAME}'"
   fi
   # Check if TWITCH_USER_NAME is set
   if [ -z "${TWITCH_USER_NAME}" ]; then
