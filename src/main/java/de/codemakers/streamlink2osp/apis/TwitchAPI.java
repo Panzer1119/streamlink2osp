@@ -140,6 +140,10 @@ public class TwitchAPI {
         return twitchHelix;
     }
 
+    public static List<User> getTwitchUsers() {
+        return twitchUsers;
+    }
+
     private TwitchAPI() {
     }
 
