@@ -52,7 +52,7 @@ public class CommandUtils {
                 return true;
             }
         } catch (ExecuteException ex) {
-            logger.error("ExecuteException occurred", ex);
+            //logger.error("ExecuteException occurred", ex);
         } catch (IOException ex) {
             logger.error("IOException occurred", ex);
         }
