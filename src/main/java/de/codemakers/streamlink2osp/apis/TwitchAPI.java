@@ -36,7 +36,7 @@ public class TwitchAPI {
 
     static {
         checkValues();
-        logger.info("Initializing TwitchAPI");
+        logger.info("Initializing TwitchClient");
         final TwitchIdentityProvider twitchIdentityProvider = new TwitchIdentityProvider(Config.getTwitchClientId(), Config.getTwitchClientSecret(), "");
         logger.debug("Setting up CredentialManager with TwitchIdentityProvider: {}", twitchIdentityProvider);
         credentialManager = CredentialManagerBuilder.builder().build();
@@ -52,7 +52,7 @@ public class TwitchAPI {
         Runtime.getRuntime().addShutdownHook(new Thread(TwitchAPI::close));
         logger.debug("Set up TwitchClient: {}", twitchClient);
         twitchHelix = twitchClient.getHelix();
-        logger.info("Initialized TwitchAPI");
+        logger.info("Initialized TwitchClient");
     }
 
     private static void checkValues() {
