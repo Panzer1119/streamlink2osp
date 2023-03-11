@@ -22,9 +22,17 @@ import com.github.twitch4j.TwitchClient;
 import com.github.twitch4j.TwitchClientBuilder;
 import com.github.twitch4j.auth.providers.TwitchIdentityProvider;
 import com.github.twitch4j.helix.TwitchHelix;
+import com.github.twitch4j.helix.domain.User;
+import com.github.twitch4j.helix.domain.UserList;
 import de.codemakers.streamlink2osp.Config;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TwitchAPI {
 
@@ -33,6 +41,8 @@ public class TwitchAPI {
     private static final CredentialManager credentialManager;
     private static final TwitchClient twitchClient;
     private static final TwitchHelix twitchHelix;
+
+    private static final List<User> twitchUsers = new ArrayList<>();
 
     static {
         checkValues();
@@ -53,6 +63,7 @@ public class TwitchAPI {
         logger.debug("Set up TwitchClient: {}", twitchClient);
         twitchHelix = twitchClient.getHelix();
         logger.info("Initialized TwitchClient");
+        init();
     }
 
     private static void checkValues() {
@@ -60,6 +71,45 @@ public class TwitchAPI {
         if (Config.getTwitchUserIds().size() + Config.getTwitchUserLogins().size() > 100) {
             throw new IllegalArgumentException("Twitch user ids and logins together are more than 100. For more information see https://dev.twitch.tv/docs/api/reference#get-users");
         }
+    }
+
+    private static void init() {
+        logger.info("Initializing TwitchAPI");
+        // Get Twitch users
+        logger.debug("Getting Twitch users");
+        final UserList userList = twitchHelix.getUsers(null, Config.getTwitchUserLogins(), Config.getTwitchUserIds()).execute();
+        twitchUsers.addAll(userList.getUsers());
+        logger.debug("Got Twitch users: {}", twitchUsers);
+        checkUsers();
+        logger.info("Initialized TwitchAPI");
+    }
+
+    private static void checkUsers() {
+        // Check if Twitch users are empty
+        if (twitchUsers.isEmpty()) {
+            throw new IllegalArgumentException("No Twitch users found.");
+        }
+        // Map Twitch user logins to multiple Twitch users
+        final Map<String, List<User>> loginUsersMap = twitchUsers.stream().collect(Collectors.groupingBy(User::getLogin));
+        // Remove all Twitch user logins that are not mapped to multiple Twitch users
+        loginUsersMap.entrySet().removeIf(entry -> entry.getValue().size() <= 1);
+        // Log all Twitch user logins that are mapped to multiple Twitch users
+        loginUsersMap.forEach(TwitchAPI::logDuplicateUsers);
+    }
+
+    private static void logDuplicateUsers(String login, List<User> users) {
+        final List<String> userStrings = users.stream().map(TwitchAPI::formatDuplicateUser).toList();
+        logger.warn("Twitch user login \"{}\" is mapped to multiple Twitch users:\n{}", login, String.join("\n", userStrings));
+    }
+
+    private static String formatDuplicateUser(User user) {
+        final String id = user.getId();
+        final String displayName = user.getDisplayName();
+        final Instant createdAt = user.getCreatedAt();
+        final String broadcasterType = user.getBroadcasterType();
+        final String description = user.getDescription();
+        final int viewCount = user.getViewCount() == null ? -1 : user.getViewCount();
+        return String.format("ID: \"%s\", Display Name: \"%s\", Created at: \"%s\", Broadcaster Type: \"%s\", View Count: %d, Description: \"%s\"", id, displayName, createdAt, broadcasterType, viewCount, description);
     }
 
     private static void close() {
