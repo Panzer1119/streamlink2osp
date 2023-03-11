@@ -89,6 +89,8 @@ public class TwitchAPI {
         if (twitchUsers.isEmpty()) {
             throw new IllegalArgumentException("No Twitch users found.");
         }
+        // Check if a Twitch user login is null and log the user
+        twitchUsers.stream().filter(user -> user.getLogin() == null).forEach(user -> logger.warn("Twitch user login is null: {}", user));
         // Map Twitch user logins to multiple Twitch users
         final Map<String, List<User>> loginUsersMap = twitchUsers.stream().collect(Collectors.groupingBy(User::getLogin));
         // Remove all Twitch user logins that are not mapped to multiple Twitch users
