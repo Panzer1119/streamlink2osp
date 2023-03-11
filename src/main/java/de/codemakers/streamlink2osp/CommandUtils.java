@@ -35,6 +35,9 @@ public class CommandUtils {
     }
 
     public static void checkCommandAvailable(String command) {
+        if (command == null || command.isEmpty()) {
+            throw new IllegalArgumentException("Command is null or empty!");
+        }
         // Determine the command syntax based on the operating system
         // Create a command line object to represent the "where" or "which" command
         final CommandLine commandLine = new CommandLine((OS.isFamilyWindows()) ? "where" : "which");
