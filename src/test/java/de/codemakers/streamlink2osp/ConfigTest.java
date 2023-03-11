@@ -16,13 +16,28 @@
 
 package de.codemakers.streamlink2osp;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 class ConfigTest {
+
+    // Generate random values for the environment variables with RandomStringUtils
+    private static final String TWITCH_CLIENT_ID = RandomStringUtils.randomAlphanumeric(32);
+    private static final String TWITCH_CLIENT_SECRET = RandomStringUtils.randomAlphanumeric(32);
+    private static final String TWITCH_USER_IDS = IntStream.range(0, 10).mapToObj(i -> RandomStringUtils.randomNumeric(8)).collect(Collectors.joining(","));
+    private static final String TWITCH_USER_LOGINS = IntStream.range(0, 10).mapToObj(i -> RandomStringUtils.randomAlphanumeric(12)).collect(Collectors.joining(","));
 
     @BeforeAll
     static void setUp() {
+        // Set the environment variables
+        System.setProperty("TWITCH_CLIENT_ID", TWITCH_CLIENT_ID);
+        System.setProperty("TWITCH_CLIENT_SECRET", TWITCH_CLIENT_SECRET);
+        System.setProperty("TWITCH_USER_IDS", TWITCH_USER_IDS);
+        System.setProperty("TWITCH_USER_LOGINS", TWITCH_USER_LOGINS);
     }
 
     @Test
