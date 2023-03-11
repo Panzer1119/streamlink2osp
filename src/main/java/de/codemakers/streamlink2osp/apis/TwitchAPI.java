@@ -120,9 +120,9 @@ public class TwitchAPI {
                 logger.warn("TwitchClient is null, so it can't be closed");
                 return;
             }
-            logger.info("Closing TwitchClient");
+            logger.debug("Closing TwitchClient");
             twitchClient.close();
-            logger.info("Closed TwitchClient");
+            logger.debug("Closed TwitchClient");
         } catch (Exception ex) {
             logger.error("Failed to close TwitchClient", ex);
         }
