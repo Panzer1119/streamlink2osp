@@ -19,6 +19,8 @@ package de.codemakers.streamlink2osp;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.List;
+
 public class Config {
 
     private static final Logger logger = LogManager.getLogger();
@@ -42,8 +44,8 @@ public class Config {
     private static final String VALUE_TWITCH_USER_LOGINS = getConfig(KEY_TWITCH_USER_LOGINS, DEFAULT_TWITCH_USER_LOGINS);
 
     // Runtime Values
-    private static String[] TWITCH_USER_IDS = null;
-    private static String[] TWITCH_USER_LOGINS = null;
+    private static List<String> TWITCH_USER_IDS = null;
+    private static List<String> TWITCH_USER_LOGINS = null;
 
     private static String getConfig(String key, String defaultValue) {
         String value = System.getProperty(key);
@@ -82,16 +84,16 @@ public class Config {
         return checkValue(VALUE_TWITCH_CLIENT_SECRET, KEY_TWITCH_CLIENT_SECRET);
     }
 
-    public static String[] getTwitchUserIds() {
+    public static List<String> getTwitchUserIds() {
         if (TWITCH_USER_IDS == null) {
-            TWITCH_USER_IDS = checkArrayValue(VALUE_TWITCH_USER_IDS, KEY_TWITCH_USER_IDS).trim().split("\\s*,\\s*");
+            TWITCH_USER_IDS = List.of(checkArrayValue(VALUE_TWITCH_USER_IDS, KEY_TWITCH_USER_IDS).trim().split("\\s*,\\s*"));
         }
         return TWITCH_USER_IDS;
     }
 
-    public static String[] getTwitchUserLogins() {
+    public static List<String> getTwitchUserLogins() {
         if (TWITCH_USER_LOGINS == null) {
-            TWITCH_USER_LOGINS = checkArrayValue(VALUE_TWITCH_USER_LOGINS, KEY_TWITCH_USER_LOGINS).trim().split("\\s*,\\s*");
+            TWITCH_USER_LOGINS = List.of(checkArrayValue(VALUE_TWITCH_USER_LOGINS, KEY_TWITCH_USER_LOGINS).trim().split("\\s*,\\s*"));
         }
         return TWITCH_USER_LOGINS;
     }
