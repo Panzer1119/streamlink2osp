@@ -16,5 +16,71 @@
 
 package de.codemakers.streamlink2osp.apis;
 
+import com.github.philippheuer.credentialmanager.CredentialManager;
+import com.github.philippheuer.credentialmanager.CredentialManagerBuilder;
+import com.github.twitch4j.TwitchClient;
+import com.github.twitch4j.TwitchClientBuilder;
+import com.github.twitch4j.auth.providers.TwitchIdentityProvider;
+import com.github.twitch4j.helix.TwitchHelix;
+import de.codemakers.streamlink2osp.Config;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class TwitchAPI {
+
+    private static final Logger logger = LogManager.getLogger();
+
+    private static final CredentialManager credentialManager;
+    private static final TwitchClient twitchClient;
+    private static final TwitchHelix twitchHelix;
+
+    static {
+        logger.info("Initializing TwitchAPI");
+        final TwitchIdentityProvider twitchIdentityProvider = new TwitchIdentityProvider(Config.getTwitchClientId(), Config.getTwitchClientSecret(), "");
+        logger.debug("Setting up CredentialManager with TwitchIdentityProvider: {}", twitchIdentityProvider);
+        credentialManager = CredentialManagerBuilder.builder().build();
+        credentialManager.registerIdentityProvider(twitchIdentityProvider);
+        logger.debug("Set up CredentialManager: {}", credentialManager);
+        logger.debug("Setting up TwitchClient with CredentialManager: {}", credentialManager);
+        twitchClient = TwitchClientBuilder.builder()
+                .withCredentialManager(credentialManager)
+                .withClientId(Config.getTwitchClientId())
+                .withClientSecret(Config.getTwitchClientSecret())
+                .withEnableHelix(true)
+                .build();
+        Runtime.getRuntime().addShutdownHook(new Thread(TwitchAPI::close));
+        logger.debug("Set up TwitchClient: {}", twitchClient);
+        twitchHelix = twitchClient.getHelix();
+        logger.info("Initialized TwitchAPI");
+    }
+
+    private static void close() {
+        try {
+            if (twitchClient == null) {
+                logger.warn("TwitchClient is null, so it can't be closed");
+                return;
+            }
+            logger.info("Closing TwitchClient");
+            twitchClient.close();
+            logger.info("Closed TwitchClient");
+        } catch (Exception ex) {
+            logger.error("Failed to close TwitchClient", ex);
+        }
+    }
+
+    public static CredentialManager getCredentialManager() {
+        return credentialManager;
+    }
+
+    public static TwitchClient getTwitchClient() {
+        return twitchClient;
+    }
+
+    public static TwitchHelix getTwitchHelix() {
+        return twitchHelix;
+    }
+
+    private TwitchAPI() {
+    }
+
 }
