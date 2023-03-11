@@ -16,7 +16,37 @@
 
 package de.codemakers.streamlink2osp;
 
+import org.apache.commons.exec.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+
 public class CommandUtils {
+
+    private static final Logger logger = LogManager.getLogger();
+
+    public static void checkCommandAvailable(String command) {
+        // Determine the command syntax based on the operating system
+        // Create a command line object to represent the "where" or "which" command
+        final CommandLine commandLine = new CommandLine((OS.isFamilyWindows()) ? "where" : "which");
+        // Add the command to be checked as an argument to the "where" or "which" command
+        commandLine.addArgument(command);
+        // Create a new DefaultExecutor
+        final Executor executor = new DefaultExecutor();
+        try {
+            // Execute the "where" or "which" command to check if the command is available on the system
+            final int exitValue = executor.execute(commandLine);
+            if (exitValue == 0) {
+                return;
+            }
+        } catch (ExecuteException ex) {
+            logger.error("ExecuteException occurred", ex);
+        } catch (IOException ex) {
+            logger.error("IOException occurred", ex);
+        }
+        throw new RuntimeException("Command \"" + command + "\" is not available on this system!");
+    }
 
     private CommandUtils() {
     }
