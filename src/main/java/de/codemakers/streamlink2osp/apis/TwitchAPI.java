@@ -35,6 +35,7 @@ public class TwitchAPI {
     private static final TwitchHelix twitchHelix;
 
     static {
+        checkValues();
         logger.info("Initializing TwitchAPI");
         final TwitchIdentityProvider twitchIdentityProvider = new TwitchIdentityProvider(Config.getTwitchClientId(), Config.getTwitchClientSecret(), "");
         logger.debug("Setting up CredentialManager with TwitchIdentityProvider: {}", twitchIdentityProvider);
@@ -52,6 +53,13 @@ public class TwitchAPI {
         logger.debug("Set up TwitchClient: {}", twitchClient);
         twitchHelix = twitchClient.getHelix();
         logger.info("Initialized TwitchAPI");
+    }
+
+    private static void checkValues() {
+        // Check if Twitch user ids and logins together are more than 100
+        if (Config.getTwitchUserIds().size() + Config.getTwitchUserLogins().size() > 100) {
+            throw new IllegalArgumentException("Twitch user ids and logins together are more than 100. For more information see https://dev.twitch.tv/docs/api/reference#get-users");
+        }
     }
 
     private static void close() {
