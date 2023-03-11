@@ -35,21 +35,26 @@ public class Config {
     private static final String DEFAULT_TWITCH_USER_IDS = "";
     private static final String DEFAULT_TWITCH_USER_LOGINS = "";
 
-    // Environment Values
-    private static final String ENV_TWITCH_CLIENT_ID = System.getenv(KEY_TWITCH_CLIENT_ID);
-    private static final String ENV_TWITCH_CLIENT_SECRET = System.getenv(KEY_TWITCH_CLIENT_SECRET);
-    private static final String ENV_TWITCH_USER_IDS = System.getenv(KEY_TWITCH_USER_IDS);
-    private static final String ENV_TWITCH_USER_LOGINS = System.getenv(KEY_TWITCH_USER_LOGINS);
-
     // Values
-    private static final String VALUE_TWITCH_CLIENT_ID = ENV_TWITCH_CLIENT_ID != null ? ENV_TWITCH_CLIENT_ID : DEFAULT_TWITCH_CLIENT_ID;
-    private static final String VALUE_TWITCH_CLIENT_SECRET = ENV_TWITCH_CLIENT_SECRET != null ? ENV_TWITCH_CLIENT_SECRET : DEFAULT_TWITCH_CLIENT_SECRET;
-    private static final String VALUE_TWITCH_USER_IDS = ENV_TWITCH_USER_IDS != null ? ENV_TWITCH_USER_IDS : DEFAULT_TWITCH_USER_IDS;
-    private static final String VALUE_TWITCH_USER_LOGINS = ENV_TWITCH_USER_LOGINS != null ? ENV_TWITCH_USER_LOGINS : DEFAULT_TWITCH_USER_LOGINS;
+    private static final String VALUE_TWITCH_CLIENT_ID = getConfig(KEY_TWITCH_CLIENT_ID, DEFAULT_TWITCH_CLIENT_ID);
+    private static final String VALUE_TWITCH_CLIENT_SECRET = getConfig(KEY_TWITCH_CLIENT_SECRET, DEFAULT_TWITCH_CLIENT_SECRET);
+    private static final String VALUE_TWITCH_USER_IDS = getConfig(KEY_TWITCH_USER_IDS, DEFAULT_TWITCH_USER_IDS);
+    private static final String VALUE_TWITCH_USER_LOGINS = getConfig(KEY_TWITCH_USER_LOGINS, DEFAULT_TWITCH_USER_LOGINS);
 
     // Runtime Values
     private static String[] TWITCH_USER_IDS = null;
     private static String[] TWITCH_USER_LOGINS = null;
+
+    private static String getConfig(String key, String defaultValue) {
+        String value = System.getProperty(key);
+        if (value == null) {
+            value = System.getenv(key);
+        }
+        if (value == null) {
+            value = defaultValue;
+        }
+        return value;
+    }
 
     private static String checkValue(String configValue, String configKey) {
         if (configValue == null || configValue.isEmpty()) {
