@@ -46,6 +46,8 @@ public class CommandUtils {
         // Create a new DefaultExecutor
         final Executor executor = new DefaultExecutor();
         try {
+            // Set a StreamHandler that suppresses the output of the command
+            executor.setStreamHandler(new PumpStreamHandler(null, null, null));
             // Execute the "where" or "which" command to check if the command is available on the system
             final int exitValue = executor.execute(commandLine);
             if (exitValue == 0) {
