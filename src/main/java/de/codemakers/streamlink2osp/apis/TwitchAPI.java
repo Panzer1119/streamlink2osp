@@ -79,7 +79,12 @@ public class TwitchAPI {
         logger.debug("Getting Twitch users");
         final UserList userList = twitchHelix.getUsers(null, Config.getTwitchUserIds(), Config.getTwitchUserLogins()).execute();
         twitchUsers.addAll(userList.getUsers());
-        logger.debug("Got Twitch users: {}", twitchUsers);
+        // Log Twitch user display names
+        logger.debug("Got Twitch users: {}", twitchUsers.stream()
+                .map(User::getDisplayName)
+                .sorted()
+                .map(name -> "\"" + name + "\"")
+                .collect(Collectors.joining(", ")));
         checkUsers();
         logger.info("Initialized TwitchAPI");
     }
