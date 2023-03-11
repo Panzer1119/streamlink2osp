@@ -23,6 +23,9 @@ import org.junit.jupiter.api.Test;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class ConfigTest {
 
     // Generate random values for the environment variables with RandomStringUtils
@@ -42,18 +45,26 @@ class ConfigTest {
 
     @Test
     void getTwitchClientId() {
+        // Check if the environment variable is set correctly
+        assertEquals(TWITCH_CLIENT_ID, Config.getTwitchClientId());
     }
 
     @Test
     void getTwitchClientSecret() {
+        // Check if the environment variable is set correctly
+        assertEquals(TWITCH_CLIENT_SECRET, Config.getTwitchClientSecret());
     }
 
     @Test
     void getTwitchUserIds() {
+        // Check if the environment variable is set correctly
+        assertArrayEquals(TWITCH_USER_IDS.trim().split("\\s*,\\s*"), Config.getTwitchUserIds());
     }
 
     @Test
     void getTwitchUserLogins() {
+        // Check if the environment variable is set correctly
+        assertArrayEquals(TWITCH_USER_LOGINS.trim().split("\\s*,\\s*"), Config.getTwitchUserLogins());
     }
 
 }
