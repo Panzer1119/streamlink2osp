@@ -77,7 +77,7 @@ public class TwitchAPI {
         logger.info("Initializing TwitchAPI");
         // Get Twitch users
         logger.debug("Getting Twitch users");
-        final UserList userList = twitchHelix.getUsers(null, Config.getTwitchUserLogins(), Config.getTwitchUserIds()).execute();
+        final UserList userList = twitchHelix.getUsers(null, Config.getTwitchUserIds(), Config.getTwitchUserLogins()).execute();
         twitchUsers.addAll(userList.getUsers());
         logger.debug("Got Twitch users: {}", twitchUsers);
         checkUsers();
