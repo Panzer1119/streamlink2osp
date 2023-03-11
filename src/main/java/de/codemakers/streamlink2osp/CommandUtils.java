@@ -26,6 +26,14 @@ public class CommandUtils {
 
     private static final Logger logger = LogManager.getLogger();
 
+    public static final String COMMAND_STREAMLINK = "streamlink";
+    public static final String COMMAND_FFMPEG = "ffmpeg";
+
+    static {
+        checkCommandAvailable(COMMAND_STREAMLINK);
+        checkCommandAvailable(COMMAND_FFMPEG);
+    }
+
     public static void checkCommandAvailable(String command) {
         // Determine the command syntax based on the operating system
         // Create a command line object to represent the "where" or "which" command
