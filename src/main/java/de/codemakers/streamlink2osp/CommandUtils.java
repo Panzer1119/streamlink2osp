@@ -34,7 +34,7 @@ public class CommandUtils {
         checkCommandAvailable(COMMAND_FFMPEG);
     }
 
-    public static void checkCommandAvailable(String command) {
+    public static boolean checkCommandAvailable(String command) {
         if (command == null || command.isEmpty()) {
             throw new IllegalArgumentException("Command is null or empty!");
         }
@@ -49,7 +49,7 @@ public class CommandUtils {
             // Execute the "where" or "which" command to check if the command is available on the system
             final int exitValue = executor.execute(commandLine);
             if (exitValue == 0) {
-                return;
+                return true;
             }
         } catch (ExecuteException ex) {
             logger.error("ExecuteException occurred", ex);
