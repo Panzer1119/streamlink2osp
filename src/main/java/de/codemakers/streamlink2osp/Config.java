@@ -31,6 +31,10 @@ public class Config {
     public static final String KEY_TWITCH_CLIENT_SECRET = "TWITCH_CLIENT_SECRET";
     public static final String KEY_TWITCH_USER_IDS = "TWITCH_USER_IDS";
     public static final String KEY_TWITCH_USER_LOGINS = "TWITCH_USER_LOGINS";
+    // // Open Streaming Platform
+    public static final String KEY_OSP_FQDN = "OSP_FQDN";
+    public static final String KEY_OSP_STREAM_ID = "OSP_STREAM_ID";
+    public static final String KEY_OSP_STREAM_KEY = "OSP_STREAM_KEY";
 
     // Default Values
     // // Twitch
@@ -38,6 +42,10 @@ public class Config {
     private static final String DEFAULT_TWITCH_CLIENT_SECRET = null;
     private static final String DEFAULT_TWITCH_USER_IDS = "";
     private static final String DEFAULT_TWITCH_USER_LOGINS = "";
+    // // Open Streaming Platform
+    private static final String DEFAULT_OSP_FQDN = "localhost";
+    private static final String DEFAULT_OSP_STREAM_ID = null;
+    private static final String DEFAULT_OSP_STREAM_KEY = null;
 
     // Values
     // // Twitch
@@ -45,6 +53,10 @@ public class Config {
     private static final String VALUE_TWITCH_CLIENT_SECRET = getConfig(KEY_TWITCH_CLIENT_SECRET, DEFAULT_TWITCH_CLIENT_SECRET);
     private static final String VALUE_TWITCH_USER_IDS = getConfig(KEY_TWITCH_USER_IDS, DEFAULT_TWITCH_USER_IDS);
     private static final String VALUE_TWITCH_USER_LOGINS = getConfig(KEY_TWITCH_USER_LOGINS, DEFAULT_TWITCH_USER_LOGINS);
+    // // Open Streaming Platform
+    private static final String VALUE_OSP_FQDN = getConfig(KEY_OSP_FQDN, DEFAULT_OSP_FQDN);
+    private static final String VALUE_OSP_STREAM_ID = getConfig(KEY_OSP_STREAM_ID, DEFAULT_OSP_STREAM_ID);
+    private static final String VALUE_OSP_STREAM_KEY = getConfig(KEY_OSP_STREAM_KEY, DEFAULT_OSP_STREAM_KEY);
 
     // Runtime Values
     // // Twitch
@@ -104,6 +116,20 @@ public class Config {
             TWITCH_USER_LOGINS = List.of(checkArrayValue(VALUE_TWITCH_USER_LOGINS, KEY_TWITCH_USER_LOGINS).trim().split("\\s*,\\s*"));
         }
         return TWITCH_USER_LOGINS;
+    }
+
+    // // Open Streaming Platform
+
+    public static String getOSPFQDN() {
+        return checkValue(VALUE_OSP_FQDN, KEY_OSP_FQDN);
+    }
+
+    public static String getOSPStreamId() {
+        return checkValue(VALUE_OSP_STREAM_ID, KEY_OSP_STREAM_ID);
+    }
+
+    public static String getOSPStreamKey() {
+        return checkValue(VALUE_OSP_STREAM_KEY, KEY_OSP_STREAM_KEY);
     }
 
     private Config() {
