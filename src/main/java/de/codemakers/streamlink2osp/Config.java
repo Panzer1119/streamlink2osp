@@ -26,24 +26,28 @@ public class Config {
     private static final Logger logger = LogManager.getLogger();
 
     // Keys
+    // // Twitch
     public static final String KEY_TWITCH_CLIENT_ID = "TWITCH_CLIENT_ID";
     public static final String KEY_TWITCH_CLIENT_SECRET = "TWITCH_CLIENT_SECRET";
     public static final String KEY_TWITCH_USER_IDS = "TWITCH_USER_IDS";
     public static final String KEY_TWITCH_USER_LOGINS = "TWITCH_USER_LOGINS";
 
     // Default Values
+    // // Twitch
     private static final String DEFAULT_TWITCH_CLIENT_ID = null;
     private static final String DEFAULT_TWITCH_CLIENT_SECRET = null;
     private static final String DEFAULT_TWITCH_USER_IDS = "";
     private static final String DEFAULT_TWITCH_USER_LOGINS = "";
 
     // Values
+    // // Twitch
     private static final String VALUE_TWITCH_CLIENT_ID = getConfig(KEY_TWITCH_CLIENT_ID, DEFAULT_TWITCH_CLIENT_ID);
     private static final String VALUE_TWITCH_CLIENT_SECRET = getConfig(KEY_TWITCH_CLIENT_SECRET, DEFAULT_TWITCH_CLIENT_SECRET);
     private static final String VALUE_TWITCH_USER_IDS = getConfig(KEY_TWITCH_USER_IDS, DEFAULT_TWITCH_USER_IDS);
     private static final String VALUE_TWITCH_USER_LOGINS = getConfig(KEY_TWITCH_USER_LOGINS, DEFAULT_TWITCH_USER_LOGINS);
 
     // Runtime Values
+    // // Twitch
     private static List<String> TWITCH_USER_IDS = null;
     private static List<String> TWITCH_USER_LOGINS = null;
 
@@ -75,6 +79,10 @@ public class Config {
         }
         return configValue;
     }
+
+    // Getters
+
+    // // Twitch
 
     public static String getTwitchClientId() {
         return checkValue(VALUE_TWITCH_CLIENT_ID, KEY_TWITCH_CLIENT_ID);
