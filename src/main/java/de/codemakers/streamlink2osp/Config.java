@@ -26,6 +26,15 @@ public class Config {
     private static final Logger logger = LogManager.getLogger();
 
     // Keys
+    // // Streamlink
+    public static final String KEY_STREAMLINK_PATH = "STREAMLINK_PATH";
+    public static final String KEY_STREAMLINK_QUALITY = "STREAMLINK_QUALITY";
+    public static final String KEY_STREAMLINK_RETRY_STREAMS = "STREAMLINK_RETRY_STREAMS";
+    public static final String KEY_STREAMLINK_RETRY_MAX = "STREAMLINK_RETRY_MAX";
+    public static final String KEY_STREAMLINK_RETRY_OPEN = "STREAMLINK_RETRY_OPEN";
+    public static final String KEY_STREAMLINK_TWITCH_DISABLE_ADS = "STREAMLINK_TWITCH_DISABLE_ADS";
+    public static final String KEY_STREAMLINK_TWITCH_DISABLE_RERUNS = "STREAMLINK_TWITCH_DISABLE_RERUNS";
+    public static final String KEY_STREAMLINK_ADDITIONAL_OPTIONS = "STREAMLINK_ADDITIONAL_OPTIONS";
     // // FFmpeg
     public static final String KEY_FFMPEG_PATH = "FFMPEG_PATH";
     public static final String KEY_FFMPEG_OPTIONS = "FFMPEG_OPTIONS";
@@ -46,6 +55,15 @@ public class Config {
     public static final String KEY_OSP_STREAM_KEY = "OSP_STREAM_KEY";
 
     // Default Values
+    // // Streamlink
+    private static final String DEFAULT_STREAMLINK_PATH = "streamlink";
+    private static final String DEFAULT_STREAMLINK_QUALITY = "best";
+    private static final String DEFAULT_STREAMLINK_RETRY_STREAMS = "120";
+    private static final String DEFAULT_STREAMLINK_RETRY_MAX = "0";
+    private static final String DEFAULT_STREAMLINK_RETRY_OPEN = "2";
+    private static final String DEFAULT_STREAMLINK_TWITCH_DISABLE_ADS = "true";
+    private static final String DEFAULT_STREAMLINK_TWITCH_DISABLE_RERUNS = "true";
+    private static final String DEFAULT_STREAMLINK_ADDITIONAL_OPTIONS = "";
     // // FFmpeg
     private static final String DEFAULT_FFMPEG_PATH = "ffmpeg";
     private static final String DEFAULT_FFMPEG_OPTIONS = "-c copy -f flv";
@@ -66,6 +84,15 @@ public class Config {
     private static final String DEFAULT_OSP_STREAM_KEY = null;
 
     // Values
+    // // Streamlink
+    private static final String VALUE_STREAMLINK_PATH = getConfig(KEY_STREAMLINK_PATH, DEFAULT_STREAMLINK_PATH);
+    private static final String VALUE_STREAMLINK_QUALITY = getConfig(KEY_STREAMLINK_QUALITY, DEFAULT_STREAMLINK_QUALITY);
+    private static final String VALUE_STREAMLINK_RETRY_STREAMS = getConfig(KEY_STREAMLINK_RETRY_STREAMS, DEFAULT_STREAMLINK_RETRY_STREAMS);
+    private static final String VALUE_STREAMLINK_RETRY_MAX = getConfig(KEY_STREAMLINK_RETRY_MAX, DEFAULT_STREAMLINK_RETRY_MAX);
+    private static final String VALUE_STREAMLINK_RETRY_OPEN = getConfig(KEY_STREAMLINK_RETRY_OPEN, DEFAULT_STREAMLINK_RETRY_OPEN);
+    private static final String VALUE_STREAMLINK_TWITCH_DISABLE_ADS = getConfig(KEY_STREAMLINK_TWITCH_DISABLE_ADS, DEFAULT_STREAMLINK_TWITCH_DISABLE_ADS);
+    private static final String VALUE_STREAMLINK_TWITCH_DISABLE_RERUNS = getConfig(KEY_STREAMLINK_TWITCH_DISABLE_RERUNS, DEFAULT_STREAMLINK_TWITCH_DISABLE_RERUNS);
+    private static final String VALUE_STREAMLINK_ADDITIONAL_OPTIONS = getConfig(KEY_STREAMLINK_ADDITIONAL_OPTIONS, DEFAULT_STREAMLINK_ADDITIONAL_OPTIONS);
     // // FFmpeg
     private static final String VALUE_FFMPEG_PATH = getConfig(KEY_FFMPEG_PATH, DEFAULT_FFMPEG_PATH);
     private static final String VALUE_FFMPEG_OPTIONS = getConfig(KEY_FFMPEG_OPTIONS, DEFAULT_FFMPEG_OPTIONS);
@@ -86,6 +113,12 @@ public class Config {
     private static final String VALUE_OSP_STREAM_KEY = getConfig(KEY_OSP_STREAM_KEY, DEFAULT_OSP_STREAM_KEY);
 
     // Runtime Values
+    // Streamlink
+    private static Integer STREAMLINK_RETRY_STREAMS = null;
+    private static Integer STREAMLINK_RETRY_MAX = null;
+    private static Integer STREAMLINK_RETRY_OPEN = null;
+    private static Boolean STREAMLINK_TWITCH_DISABLE_ADS = null;
+    private static Boolean STREAMLINK_TWITCH_DISABLE_RERUNS = null;
     // // Twitch
     private static List<String> TWITCH_USER_IDS = null;
     private static List<String> TWITCH_USER_LOGINS = null;
@@ -120,6 +153,55 @@ public class Config {
     }
 
     // Getters
+
+    // // Streamlink
+
+    public static String getStreamlinkPath() {
+        return checkValue(VALUE_STREAMLINK_PATH, KEY_STREAMLINK_PATH);
+    }
+
+    public static String getStreamlinkQuality() {
+        return checkValue(VALUE_STREAMLINK_QUALITY, KEY_STREAMLINK_QUALITY);
+    }
+
+    public static Integer getStreamlinkRetryStreams() {
+        if (STREAMLINK_RETRY_STREAMS == null && VALUE_STREAMLINK_RETRY_STREAMS != null) {
+            STREAMLINK_RETRY_STREAMS = Integer.parseInt(checkValue(VALUE_STREAMLINK_RETRY_STREAMS, KEY_STREAMLINK_RETRY_STREAMS));
+        }
+        return STREAMLINK_RETRY_STREAMS;
+    }
+
+    public static Integer getStreamlinkRetryMax() {
+        if (STREAMLINK_RETRY_MAX == null && VALUE_STREAMLINK_RETRY_MAX != null) {
+            STREAMLINK_RETRY_MAX = Integer.parseInt(checkValue(VALUE_STREAMLINK_RETRY_MAX, KEY_STREAMLINK_RETRY_MAX));
+        }
+        return STREAMLINK_RETRY_MAX;
+    }
+
+    public static Integer getStreamlinkRetryOpen() {
+        if (STREAMLINK_RETRY_OPEN == null && VALUE_STREAMLINK_RETRY_OPEN != null) {
+            STREAMLINK_RETRY_OPEN = Integer.parseInt(checkValue(VALUE_STREAMLINK_RETRY_OPEN, KEY_STREAMLINK_RETRY_OPEN));
+        }
+        return STREAMLINK_RETRY_OPEN;
+    }
+
+    public static Boolean getStreamlinkTwitchDisableAds() {
+        if (STREAMLINK_TWITCH_DISABLE_ADS == null && VALUE_STREAMLINK_TWITCH_DISABLE_ADS != null) {
+            STREAMLINK_TWITCH_DISABLE_ADS = Boolean.parseBoolean(checkValue(VALUE_STREAMLINK_TWITCH_DISABLE_ADS, KEY_STREAMLINK_TWITCH_DISABLE_ADS));
+        }
+        return STREAMLINK_TWITCH_DISABLE_ADS;
+    }
+
+    public static Boolean getStreamlinkTwitchDisableReruns() {
+        if (STREAMLINK_TWITCH_DISABLE_RERUNS == null && VALUE_STREAMLINK_TWITCH_DISABLE_RERUNS != null) {
+            STREAMLINK_TWITCH_DISABLE_RERUNS = Boolean.parseBoolean(checkValue(VALUE_STREAMLINK_TWITCH_DISABLE_RERUNS, KEY_STREAMLINK_TWITCH_DISABLE_RERUNS));
+        }
+        return STREAMLINK_TWITCH_DISABLE_RERUNS;
+    }
+
+    public static String getStreamlinkAdditionalOptions() {
+        return checkValue(VALUE_STREAMLINK_ADDITIONAL_OPTIONS, KEY_STREAMLINK_ADDITIONAL_OPTIONS);
+    }
 
     // // FFmpeg
 
