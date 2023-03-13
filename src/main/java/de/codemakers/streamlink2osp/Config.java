@@ -122,6 +122,9 @@ public class Config {
     // // Twitch
     private static List<String> TWITCH_USER_IDS = null;
     private static List<String> TWITCH_USER_LOGINS = null;
+    // // Open Streaming Platform
+    private static Integer OSP_API_PORT = null;
+    private static Integer OSP_RTMP_PORT = null;
 
     private static String getConfig(String key, String defaultValue) {
         String value = System.getProperty(key);
@@ -247,8 +250,11 @@ public class Config {
         return checkValue(VALUE_OSP_API_HOST, KEY_OSP_API_HOST);
     }
 
-    public static String getOSPApiPort() {
-        return checkValue(VALUE_OSP_API_PORT, KEY_OSP_API_PORT);
+    public static Integer getOSPApiPort() {
+        if (OSP_API_PORT == null && VALUE_OSP_API_PORT != null) {
+            OSP_API_PORT = Integer.parseInt(checkValue(VALUE_OSP_API_PORT, KEY_OSP_API_PORT));
+        }
+        return OSP_API_PORT;
     }
 
     public static String getOSPApiPath() {
@@ -267,8 +273,11 @@ public class Config {
         return checkValue(VALUE_OSP_RTMP_HOST, KEY_OSP_RTMP_HOST);
     }
 
-    public static String getOSPRtmpPort() {
-        return checkValue(VALUE_OSP_RTMP_PORT, KEY_OSP_RTMP_PORT);
+    public static Integer getOSPRtmpPort() {
+        if (OSP_RTMP_PORT == null && VALUE_OSP_RTMP_PORT != null) {
+            OSP_RTMP_PORT = Integer.parseInt(checkValue(VALUE_OSP_RTMP_PORT, KEY_OSP_RTMP_PORT));
+        }
+        return OSP_RTMP_PORT;
     }
 
     public static String getOSPStreamKey() {
