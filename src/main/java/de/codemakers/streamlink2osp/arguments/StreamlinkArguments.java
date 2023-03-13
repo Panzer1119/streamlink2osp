@@ -47,13 +47,11 @@ public record StreamlinkArguments(String path, String quality, Integer retryStre
     public CommandLine createCommandLine(TwitchReStreamArguments arguments) {
         final CommandLine commandLine = new CommandLine(path);
         commandLine.addArgument("--stdout");
-        if (twitchDisableAds != null) {
+        if (twitchDisableAds != null && twitchDisableAds) {
             commandLine.addArgument("--twitch-disable-ads");
-            commandLine.addArgument(twitchDisableAds.toString());
         }
-        if (twitchDisableReruns != null) {
+        if (twitchDisableReruns != null && twitchDisableReruns) {
             commandLine.addArgument("--twitch-disable-reruns");
-            commandLine.addArgument(twitchDisableReruns.toString());
         }
         if (retryStreams != null) {
             commandLine.addArgument("--retry-streams");
