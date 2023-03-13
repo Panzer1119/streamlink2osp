@@ -67,6 +67,14 @@ public class TwitchAPI {
     }
 
     private static void checkValues() {
+        // Check if no Twitch user was specified
+        if (Config.getTwitchUserIds().isEmpty() && Config.getTwitchUserLogins().isEmpty()) {
+            throw new IllegalArgumentException("No Twitch user was specified.");
+        }
+        // Print a warning if more than one Twitch user was specified, because adding or removing one would need a restart, which kills all running streams
+        if (Config.getTwitchUserIds().size() + Config.getTwitchUserLogins().size() > 1) {
+            logger.warn("More than one Twitch user was specified. Adding or removing one would need a restart, which kills all running streams.");
+        }
         // Check if Twitch user ids and logins together are more than 100
         if (Config.getTwitchUserIds().size() + Config.getTwitchUserLogins().size() > 100) {
             throw new IllegalArgumentException("Twitch user ids and logins together are more than 100. For more information see https://dev.twitch.tv/docs/api/reference#get-users");
