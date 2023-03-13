@@ -68,7 +68,7 @@ public record StreamlinkArguments(String path, String quality, Integer retryStre
         if (additionalOptions != null && !additionalOptions.isEmpty()) {
             commandLine.addArgument(additionalOptions);
         }
-        commandLine.addArgument(String.format("https://twitch.tv/%s", arguments.twitchUserLogin()));
+        commandLine.addArgument(arguments.formatTwitchStreamUrl());
         commandLine.addArgument(quality);
         return commandLine;
     }

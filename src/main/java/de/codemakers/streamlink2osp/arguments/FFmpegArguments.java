@@ -41,7 +41,7 @@ public record FFmpegArguments(String path, String options) {
         commandLine.addArgument("-i");
         commandLine.addArgument("-");
         commandLine.addArgument(options);
-        commandLine.addArgument(String.format("rtmp://%s:%s/stream/%s", arguments.ospRtmpHost(), arguments.ospRtmpPort(), arguments.ospStreamKey()));
+        commandLine.addArgument(arguments.formatOSPStreamUrl());
         return commandLine;
     }
 

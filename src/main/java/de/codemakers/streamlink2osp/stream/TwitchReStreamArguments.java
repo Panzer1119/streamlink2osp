@@ -29,6 +29,14 @@ public record TwitchReStreamArguments(StreamlinkArguments streamlinkArguments, S
         return new TwitchReStreamArguments(StreamlinkArguments.createFromConfig(), twitchUserLogin, FFmpegArguments.createFromConfig(), Config.getOSPRtmpHost(), Config.getOSPRtmpPort(), Config.getOSPStreamKey());
     }
 
+    public String formatTwitchStreamUrl() {
+        return String.format("twitch.tv/%s", twitchUserLogin);
+    }
+
+    public String formatOSPStreamUrl() {
+        return String.format("rtmp://%s:%s/stream/%s", ospRtmpHost, ospRtmpPort, ospStreamKey);
+    }
+
     public CommandLine createStreamlinkCommandLine() {
         return streamlinkArguments.createCommandLine(this);
     }
