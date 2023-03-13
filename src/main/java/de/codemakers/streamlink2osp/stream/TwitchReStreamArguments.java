@@ -21,7 +21,7 @@ import de.codemakers.streamlink2osp.arguments.StreamlinkArguments;
 import org.apache.commons.exec.CommandLine;
 
 public record TwitchReStreamArguments(StreamlinkArguments streamlinkArguments, String twitchUserLogin,
-                                      FFmpegArguments ffmpegArguments, String ospRtmpHost, int ospRtmpPort,
+                                      FFmpegArguments ffmpegArguments, String ospRtmpHost, Integer ospRtmpPort,
                                       String ospStreamKey) {
 
     public CommandLine createStreamlinkCommandLine() {
