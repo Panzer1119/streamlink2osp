@@ -26,6 +26,9 @@ public class Config {
     private static final Logger logger = LogManager.getLogger();
 
     // Keys
+    // // FFmpeg
+    public static final String KEY_FFMPEG_PATH = "FFMPEG_PATH";
+    public static final String KEY_FFMPEG_OPTIONS = "FFMPEG_OPTIONS";
     // // Twitch
     public static final String KEY_TWITCH_CLIENT_ID = "TWITCH_CLIENT_ID";
     public static final String KEY_TWITCH_CLIENT_SECRET = "TWITCH_CLIENT_SECRET";
@@ -43,6 +46,9 @@ public class Config {
     public static final String KEY_OSP_STREAM_KEY = "OSP_STREAM_KEY";
 
     // Default Values
+    // // FFmpeg
+    private static final String DEFAULT_FFMPEG_PATH = "ffmpeg";
+    private static final String DEFAULT_FFMPEG_OPTIONS = "-c copy -f flv";
     // // Twitch
     private static final String DEFAULT_TWITCH_CLIENT_ID = null;
     private static final String DEFAULT_TWITCH_CLIENT_SECRET = null;
@@ -60,6 +66,9 @@ public class Config {
     private static final String DEFAULT_OSP_STREAM_KEY = null;
 
     // Values
+    // // FFmpeg
+    private static final String VALUE_FFMPEG_PATH = getConfig(KEY_FFMPEG_PATH, DEFAULT_FFMPEG_PATH);
+    private static final String VALUE_FFMPEG_OPTIONS = getConfig(KEY_FFMPEG_OPTIONS, DEFAULT_FFMPEG_OPTIONS);
     // // Twitch
     private static final String VALUE_TWITCH_CLIENT_ID = getConfig(KEY_TWITCH_CLIENT_ID, DEFAULT_TWITCH_CLIENT_ID);
     private static final String VALUE_TWITCH_CLIENT_SECRET = getConfig(KEY_TWITCH_CLIENT_SECRET, DEFAULT_TWITCH_CLIENT_SECRET);
@@ -111,6 +120,16 @@ public class Config {
     }
 
     // Getters
+
+    // // FFmpeg
+
+    public static String getFfmpegPath() {
+        return checkValue(VALUE_FFMPEG_PATH, KEY_FFMPEG_PATH);
+    }
+
+    public static String getFfmpegOptions() {
+        return checkValue(VALUE_FFMPEG_OPTIONS, KEY_FFMPEG_OPTIONS);
+    }
 
     // // Twitch
 
