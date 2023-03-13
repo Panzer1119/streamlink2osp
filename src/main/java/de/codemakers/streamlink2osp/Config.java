@@ -40,7 +40,6 @@ public class Config {
     public static final String KEY_OSP_API_KEY = "OSP_API_KEY";
     public static final String KEY_OSP_RTMP_HOST = "OSP_RTMP_HOST";
     public static final String KEY_OSP_RTMP_PORT = "OSP_RTMP_PORT";
-    public static final String KEY_OSP_STREAM_ID = "OSP_STREAM_ID";
     public static final String KEY_OSP_STREAM_KEY = "OSP_STREAM_KEY";
 
     // Default Values
@@ -58,7 +57,6 @@ public class Config {
     private static final String DEFAULT_OSP_API_KEY = null;
     private static final String DEFAULT_OSP_RTMP_HOST = "localhost";
     private static final String DEFAULT_OSP_RTMP_PORT = "1935";
-    private static final String DEFAULT_OSP_STREAM_ID = null;
     private static final String DEFAULT_OSP_STREAM_KEY = null;
 
     // Values
@@ -76,7 +74,6 @@ public class Config {
     private static final String VALUE_OSP_API_KEY = getConfig(KEY_OSP_API_KEY, DEFAULT_OSP_API_KEY);
     private static final String VALUE_OSP_RTMP_HOST = getConfig(KEY_OSP_RTMP_HOST, DEFAULT_OSP_RTMP_HOST);
     private static final String VALUE_OSP_RTMP_PORT = getConfig(KEY_OSP_RTMP_PORT, DEFAULT_OSP_RTMP_PORT);
-    private static final String VALUE_OSP_STREAM_ID = getConfig(KEY_OSP_STREAM_ID, DEFAULT_OSP_STREAM_ID);
     private static final String VALUE_OSP_STREAM_KEY = getConfig(KEY_OSP_STREAM_KEY, DEFAULT_OSP_STREAM_KEY);
 
     // Runtime Values
@@ -171,10 +168,6 @@ public class Config {
 
     public static String getOSPRtmpPort() {
         return checkValue(VALUE_OSP_RTMP_PORT, KEY_OSP_RTMP_PORT);
-    }
-
-    public static String getOSPStreamId() {
-        return checkValue(VALUE_OSP_STREAM_ID, KEY_OSP_STREAM_ID);
     }
 
     public static String getOSPStreamKey() {
