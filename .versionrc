@@ -1,11 +1,15 @@
 {
   "packageFiles": [
     {
-      "filename": "VERSION",
-      "type": "plain-text"
+      "filename": "build.gradle",
+      "type": "gradle"
     }
   ],
   "bumpFiles": [
+    {
+      "filename": "build.gradle",
+      "type": "gradle"
+    },
     {
       "filename": "VERSION",
       "type": "plain-text"
