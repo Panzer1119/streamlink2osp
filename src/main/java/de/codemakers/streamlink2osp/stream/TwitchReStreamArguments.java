@@ -19,7 +19,7 @@ package de.codemakers.streamlink2osp.stream;
 import de.codemakers.streamlink2osp.arguments.FFmpegArguments;
 import de.codemakers.streamlink2osp.arguments.StreamlinkArguments;
 
-public record TwitchReStreamProcess(StreamlinkArguments streamlinkArguments, String twitchUserLogin,
-                                    FFmpegArguments ffmpegArguments, String ospRtmpHost, int ospRtmpPort,
-                                    String ospStreamKey) {
+public record TwitchReStreamArguments(StreamlinkArguments streamlinkArguments, String twitchUserLogin,
+                                      FFmpegArguments ffmpegArguments, String ospRtmpHost, int ospRtmpPort,
+                                      String ospStreamKey) {
 }
