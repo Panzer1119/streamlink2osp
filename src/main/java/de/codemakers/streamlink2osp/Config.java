@@ -32,6 +32,12 @@ public class Config {
     public static final String KEY_TWITCH_USER_IDS = "TWITCH_USER_IDS";
     public static final String KEY_TWITCH_USER_LOGINS = "TWITCH_USER_LOGINS";
     // // Open Streaming Platform
+    public static final String KEY_OSP_API_PROTOCOL = "OSP_API_PROTOCOL";
+    public static final String KEY_OSP_API_HOST = "OSP_API_HOST";
+    public static final String KEY_OSP_API_PORT = "OSP_API_PORT";
+    public static final String KEY_OSP_API_PATH = "OSP_API_PATH";
+    public static final String KEY_OSP_API_VERSION = "OSP_API_VERSION";
+    public static final String KEY_OSP_API_KEY = "OSP_API_KEY";
     public static final String KEY_OSP_RTMP_HOST = "OSP_RTMP_HOST";
     public static final String KEY_OSP_RTMP_PORT = "OSP_RTMP_PORT";
     public static final String KEY_OSP_STREAM_ID = "OSP_STREAM_ID";
@@ -44,6 +50,12 @@ public class Config {
     private static final String DEFAULT_TWITCH_USER_IDS = "";
     private static final String DEFAULT_TWITCH_USER_LOGINS = "";
     // // Open Streaming Platform
+    private static final String DEFAULT_OSP_API_PROTOCOL = "http";
+    private static final String DEFAULT_OSP_API_HOST = "localhost";
+    private static final String DEFAULT_OSP_API_PORT = "80";
+    private static final String DEFAULT_OSP_API_PATH = "api";
+    private static final String DEFAULT_OSP_API_VERSION = "v1";
+    private static final String DEFAULT_OSP_API_KEY = null;
     private static final String DEFAULT_OSP_RTMP_HOST = "localhost";
     private static final String DEFAULT_OSP_RTMP_PORT = "1935";
     private static final String DEFAULT_OSP_STREAM_ID = null;
@@ -56,6 +68,12 @@ public class Config {
     private static final String VALUE_TWITCH_USER_IDS = getConfig(KEY_TWITCH_USER_IDS, DEFAULT_TWITCH_USER_IDS);
     private static final String VALUE_TWITCH_USER_LOGINS = getConfig(KEY_TWITCH_USER_LOGINS, DEFAULT_TWITCH_USER_LOGINS);
     // // Open Streaming Platform
+    private static final String VALUE_OSP_API_PROTOCOL = getConfig(KEY_OSP_API_PROTOCOL, DEFAULT_OSP_API_PROTOCOL);
+    private static final String VALUE_OSP_API_HOST = getConfig(KEY_OSP_API_HOST, DEFAULT_OSP_API_HOST);
+    private static final String VALUE_OSP_API_PORT = getConfig(KEY_OSP_API_PORT, DEFAULT_OSP_API_PORT);
+    private static final String VALUE_OSP_API_PATH = getConfig(KEY_OSP_API_PATH, DEFAULT_OSP_API_PATH);
+    private static final String VALUE_OSP_API_VERSION = getConfig(KEY_OSP_API_VERSION, DEFAULT_OSP_API_VERSION);
+    private static final String VALUE_OSP_API_KEY = getConfig(KEY_OSP_API_KEY, DEFAULT_OSP_API_KEY);
     private static final String VALUE_OSP_RTMP_HOST = getConfig(KEY_OSP_RTMP_HOST, DEFAULT_OSP_RTMP_HOST);
     private static final String VALUE_OSP_RTMP_PORT = getConfig(KEY_OSP_RTMP_PORT, DEFAULT_OSP_RTMP_PORT);
     private static final String VALUE_OSP_STREAM_ID = getConfig(KEY_OSP_STREAM_ID, DEFAULT_OSP_STREAM_ID);
@@ -122,6 +140,30 @@ public class Config {
     }
 
     // // Open Streaming Platform
+
+    public static String getOSPApiProtocol() {
+        return checkValue(VALUE_OSP_API_PROTOCOL, KEY_OSP_API_PROTOCOL);
+    }
+
+    public static String getOSPApiHost() {
+        return checkValue(VALUE_OSP_API_HOST, KEY_OSP_API_HOST);
+    }
+
+    public static String getOSPApiPort() {
+        return checkValue(VALUE_OSP_API_PORT, KEY_OSP_API_PORT);
+    }
+
+    public static String getOSPApiPath() {
+        return checkValue(VALUE_OSP_API_PATH, KEY_OSP_API_PATH);
+    }
+
+    public static String getOSPApiVersion() {
+        return checkValue(VALUE_OSP_API_VERSION, KEY_OSP_API_VERSION);
+    }
+
+    public static String getOSPApiKey() {
+        return checkValue(VALUE_OSP_API_KEY, KEY_OSP_API_KEY);
+    }
 
     public static String getOSPRtmpHost() {
         return checkValue(VALUE_OSP_RTMP_HOST, KEY_OSP_RTMP_HOST);
