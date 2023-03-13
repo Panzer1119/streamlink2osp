@@ -26,12 +26,9 @@ public class CommandUtils {
 
     private static final Logger logger = LogManager.getLogger();
 
-    public static final String COMMAND_STREAMLINK = "streamlink";
-    public static final String COMMAND_FFMPEG = "ffmpeg";
-
     static {
-        checkCommandAvailable(COMMAND_STREAMLINK);
-        checkCommandAvailable(COMMAND_FFMPEG);
+        checkCommandAvailable(Config.getStreamlinkPath());
+        checkCommandAvailable(Config.getFfmpegPath());
     }
 
     public static boolean checkCommandAvailable(String command) {
