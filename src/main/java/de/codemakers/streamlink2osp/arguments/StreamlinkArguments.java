@@ -17,6 +17,8 @@
 package de.codemakers.streamlink2osp.arguments;
 
 import de.codemakers.streamlink2osp.Config;
+import de.codemakers.streamlink2osp.stream.TwitchReStreamArguments;
+import org.apache.commons.exec.CommandLine;
 
 public record StreamlinkArguments(String path, String quality, Integer retryStreams, Integer retryMax,
                                   Integer retryOpen, Boolean twitchDisableAds, Boolean twitchDisableReruns,
@@ -40,6 +42,37 @@ public record StreamlinkArguments(String path, String quality, Integer retryStre
         final String additionalOptions = Config.getStreamlinkAdditionalOptions();
         // Create the StreamlinkArguments
         return new StreamlinkArguments(path, quality, retryStreams, retryMax, retryOpen, twitchDisableAds, twitchDisableReruns, additionalOptions);
+    }
+
+    public CommandLine createCommandLine(TwitchReStreamArguments arguments) {
+        final CommandLine commandLine = new CommandLine(path);
+        commandLine.addArgument("--stdout");
+        if (twitchDisableAds != null) {
+            commandLine.addArgument("--twitch-disable-ads");
+            commandLine.addArgument(twitchDisableAds.toString());
+        }
+        if (twitchDisableReruns != null) {
+            commandLine.addArgument("--twitch-disable-reruns");
+            commandLine.addArgument(twitchDisableReruns.toString());
+        }
+        if (retryStreams != null) {
+            commandLine.addArgument("--retry-streams");
+            commandLine.addArgument(retryStreams.toString());
+        }
+        if (retryMax != null) {
+            commandLine.addArgument("--retry-max");
+            commandLine.addArgument(retryMax.toString());
+        }
+        if (retryOpen != null) {
+            commandLine.addArgument("--retry-open");
+            commandLine.addArgument(retryOpen.toString());
+        }
+        if (additionalOptions != null && !additionalOptions.isEmpty()) {
+            commandLine.addArgument(additionalOptions);
+        }
+        commandLine.addArgument(String.format("https://twitch.tv/%s", arguments.twitchUserLogin()));
+        commandLine.addArgument(quality);
+        return commandLine;
     }
 
 }
