@@ -17,6 +17,8 @@
 package de.codemakers.streamlink2osp.arguments;
 
 import de.codemakers.streamlink2osp.Config;
+import de.codemakers.streamlink2osp.stream.TwitchReStreamArguments;
+import org.apache.commons.exec.CommandLine;
 
 public record FFmpegArguments(String path, String options) {
 
@@ -32,6 +34,15 @@ public record FFmpegArguments(String path, String options) {
         final String options = Config.getFfmpegOptions();
         // Create the FFmpegArguments
         return new FFmpegArguments(path, options);
+    }
+
+    public CommandLine createCommandLine(TwitchReStreamArguments arguments) {
+        final CommandLine commandLine = new CommandLine(path);
+        commandLine.addArgument("-i");
+        commandLine.addArgument("-");
+        commandLine.addArgument(options);
+        commandLine.addArgument(String.format("rtmp://%s:%s/stream/%s", arguments.ospRtmpHost(), arguments.ospRtmpPort(), arguments.ospStreamKey()));
+        return commandLine;
     }
 
 }
