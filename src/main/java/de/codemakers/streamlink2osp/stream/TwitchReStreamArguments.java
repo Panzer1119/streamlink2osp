@@ -18,8 +18,18 @@ package de.codemakers.streamlink2osp.stream;
 
 import de.codemakers.streamlink2osp.arguments.FFmpegArguments;
 import de.codemakers.streamlink2osp.arguments.StreamlinkArguments;
+import org.apache.commons.exec.CommandLine;
 
 public record TwitchReStreamArguments(StreamlinkArguments streamlinkArguments, String twitchUserLogin,
                                       FFmpegArguments ffmpegArguments, String ospRtmpHost, int ospRtmpPort,
                                       String ospStreamKey) {
+
+    public CommandLine createStreamlinkCommandLine() {
+        return streamlinkArguments.createCommandLine(this);
+    }
+
+    public CommandLine createFFmpegCommandLine() {
+        return ffmpegArguments.createCommandLine(this);
+    }
+
 }
