@@ -32,4 +32,12 @@ public record TwitchReStreamArguments(StreamlinkArguments streamlinkArguments, S
         return ffmpegArguments.createCommandLine(this);
     }
 
+    public CommandLine createCommandLine() {
+        final CommandLine commandLineStreamlink = createStreamlinkCommandLine();
+        final CommandLine commandLineFFmpeg = createFFmpegCommandLine();
+        commandLineStreamlink.addArgument("|");
+        commandLineStreamlink.addArgument(commandLineFFmpeg.toString(), false);
+        return commandLineStreamlink;
+    }
+
 }
