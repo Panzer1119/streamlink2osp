@@ -67,7 +67,8 @@ public record StreamlinkArguments(String path, String quality, Integer retryStre
             commandLine.addArgument(retryOpen.toString());
         }
         if (additionalOptions != null && !additionalOptions.isEmpty()) {
-            commandLine.addArgument(additionalOptions);
+            final CommandLine additionalOptionsCommandLine = CommandLine.parse(additionalOptions);
+            commandLine.addArguments(additionalOptionsCommandLine.toStrings());
         }
         if (logLevel != null && !logLevel.isEmpty()) {
             commandLine.addArgument("--loglevel");
