@@ -41,6 +41,7 @@ public record FFmpegArguments(String path, String options, String logLevel) {
         final CommandLine commandLine = new CommandLine(path);
         commandLine.addArgument("-i");
         commandLine.addArgument("pipe:");
+        commandLine.addArgument("-progress");
         commandLine.addArgument("-");
         if (logLevel != null && !logLevel.isEmpty()) {
             commandLine.addArgument("-loglevel");
