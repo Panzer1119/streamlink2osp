@@ -24,7 +24,7 @@ import java.io.IOException;
 
 public class CommandUtils {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(CommandUtils.class);
 
     static {
         checkCommandAvailable(Config.getStreamlinkPath());

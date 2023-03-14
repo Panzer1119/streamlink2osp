@@ -24,7 +24,7 @@ import java.util.Locale;
 
 public class Config {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(Config.class);
 
     // Keys
     // // Streamlink

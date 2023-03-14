@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
 
 public class TwitchAPI {
 
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger(TwitchAPI.class);
 
     private static final CredentialManager credentialManager;
     private static final TwitchClient twitchClient;
