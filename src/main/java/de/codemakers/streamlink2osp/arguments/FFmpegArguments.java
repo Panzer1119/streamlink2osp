@@ -45,7 +45,8 @@ public record FFmpegArguments(String path, String options, String logLevel) {
             commandLine.addArgument("-loglevel");
             commandLine.addArgument(logLevel);
         }
-        commandLine.addArgument(options);
+        final CommandLine optionsCommandLine = CommandLine.parse(options);
+        commandLine.addArguments(optionsCommandLine.toStrings());
         commandLine.addArgument(arguments.formatOSPStreamUrl());
         return commandLine;
     }
