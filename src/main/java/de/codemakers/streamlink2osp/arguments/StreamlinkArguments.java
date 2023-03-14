@@ -22,9 +22,9 @@ import org.apache.commons.exec.CommandLine;
 
 public record StreamlinkArguments(String path, String quality, Integer retryStreams, Integer retryMax,
                                   Integer retryOpen, Boolean twitchDisableAds, Boolean twitchDisableReruns,
-                                  String additionalOptions) {
+                                  String additionalOptions, String logLevel) {
 
-    private static final StreamlinkArguments DEFAULT = new StreamlinkArguments("streamlink", "best", null, null, null, true, true, "");
+    private static final StreamlinkArguments DEFAULT = new StreamlinkArguments("streamlink", "best", null, null, null, true, true, "", "info");
 
     public static StreamlinkArguments getDefault() {
         return DEFAULT;
@@ -40,8 +40,9 @@ public record StreamlinkArguments(String path, String quality, Integer retryStre
         final Boolean twitchDisableAds = Config.getStreamlinkTwitchDisableAds();
         final Boolean twitchDisableReruns = Config.getStreamlinkTwitchDisableReruns();
         final String additionalOptions = Config.getStreamlinkAdditionalOptions();
+        final String logLevel = Config.getStreamlinkLogLevel();
         // Create the StreamlinkArguments
-        return new StreamlinkArguments(path, quality, retryStreams, retryMax, retryOpen, twitchDisableAds, twitchDisableReruns, additionalOptions);
+        return new StreamlinkArguments(path, quality, retryStreams, retryMax, retryOpen, twitchDisableAds, twitchDisableReruns, additionalOptions, logLevel);
     }
 
     public CommandLine createCommandLine(TwitchReStreamArguments arguments) {
@@ -67,6 +68,10 @@ public record StreamlinkArguments(String path, String quality, Integer retryStre
         }
         if (additionalOptions != null && !additionalOptions.isEmpty()) {
             commandLine.addArgument(additionalOptions);
+        }
+        if (logLevel != null && !logLevel.isEmpty()) {
+            commandLine.addArgument("--loglevel");
+            commandLine.addArgument(logLevel);
         }
         commandLine.addArgument(arguments.formatTwitchStreamUrl());
         commandLine.addArgument(quality);
