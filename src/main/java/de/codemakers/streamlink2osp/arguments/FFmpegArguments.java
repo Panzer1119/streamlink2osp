@@ -20,9 +20,9 @@ import de.codemakers.streamlink2osp.Config;
 import de.codemakers.streamlink2osp.stream.TwitchReStreamArguments;
 import org.apache.commons.exec.CommandLine;
 
-public record FFmpegArguments(String path, String options) {
+public record FFmpegArguments(String path, String options, String logLevel) {
 
-    private static final FFmpegArguments DEFAULT = new FFmpegArguments("ffmpeg", "-c copy -f flv");
+    private static final FFmpegArguments DEFAULT = new FFmpegArguments("ffmpeg", "-c copy -f flv", "warning");
 
     public static FFmpegArguments getDefault() {
         return DEFAULT;
@@ -32,14 +32,19 @@ public record FFmpegArguments(String path, String options) {
         // Get the necessary config values
         final String path = Config.getFfmpegPath();
         final String options = Config.getFfmpegOptions();
+        final String logLevel = Config.getFfmpegLogLevel();
         // Create the FFmpegArguments
-        return new FFmpegArguments(path, options);
+        return new FFmpegArguments(path, options, logLevel);
     }
 
     public CommandLine createCommandLine(TwitchReStreamArguments arguments) {
         final CommandLine commandLine = new CommandLine(path);
         commandLine.addArgument("-i");
         commandLine.addArgument("-");
+        if (logLevel != null && !logLevel.isEmpty()) {
+            commandLine.addArgument("-loglevel");
+            commandLine.addArgument(logLevel);
+        }
         commandLine.addArgument(options);
         commandLine.addArgument(arguments.formatOSPStreamUrl());
         return commandLine;
