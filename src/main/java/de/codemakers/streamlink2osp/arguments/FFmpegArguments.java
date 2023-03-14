@@ -40,6 +40,7 @@ public record FFmpegArguments(String path, String options, String logLevel) {
     public CommandLine createCommandLine(TwitchReStreamArguments arguments) {
         final CommandLine commandLine = new CommandLine(path);
         commandLine.addArgument("-i");
+        commandLine.addArgument("pipe:");
         commandLine.addArgument("-");
         if (logLevel != null && !logLevel.isEmpty()) {
             commandLine.addArgument("-loglevel");
