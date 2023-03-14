@@ -20,6 +20,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.List;
+import java.util.Locale;
 
 public class Config {
 
@@ -35,9 +36,11 @@ public class Config {
     public static final String KEY_STREAMLINK_TWITCH_DISABLE_ADS = "STREAMLINK_TWITCH_DISABLE_ADS";
     public static final String KEY_STREAMLINK_TWITCH_DISABLE_RERUNS = "STREAMLINK_TWITCH_DISABLE_RERUNS";
     public static final String KEY_STREAMLINK_ADDITIONAL_OPTIONS = "STREAMLINK_ADDITIONAL_OPTIONS";
+    public static final String KEY_STREAMLINK_LOG_LEVEL = "STREAMLINK_LOG_LEVEL";
     // // FFmpeg
     public static final String KEY_FFMPEG_PATH = "FFMPEG_PATH";
     public static final String KEY_FFMPEG_OPTIONS = "FFMPEG_OPTIONS";
+    public static final String KEY_FFMPEG_LOG_LEVEL = "FFMPEG_LOG_LEVEL";
     // // Twitch
     public static final String KEY_TWITCH_CLIENT_ID = "TWITCH_CLIENT_ID";
     public static final String KEY_TWITCH_CLIENT_SECRET = "TWITCH_CLIENT_SECRET";
@@ -64,9 +67,11 @@ public class Config {
     private static final String DEFAULT_STREAMLINK_TWITCH_DISABLE_ADS = "true";
     private static final String DEFAULT_STREAMLINK_TWITCH_DISABLE_RERUNS = "true";
     private static final String DEFAULT_STREAMLINK_ADDITIONAL_OPTIONS = "";
+    private static final String DEFAULT_STREAMLINK_LOG_LEVEL = "info";
     // // FFmpeg
     private static final String DEFAULT_FFMPEG_PATH = "ffmpeg";
     private static final String DEFAULT_FFMPEG_OPTIONS = "-c copy -f flv";
+    private static final String DEFAULT_FFMPEG_LOG_LEVEL = "warning";
     // // Twitch
     private static final String DEFAULT_TWITCH_CLIENT_ID = null;
     private static final String DEFAULT_TWITCH_CLIENT_SECRET = null;
@@ -93,9 +98,11 @@ public class Config {
     private static final String VALUE_STREAMLINK_TWITCH_DISABLE_ADS = getConfig(KEY_STREAMLINK_TWITCH_DISABLE_ADS, DEFAULT_STREAMLINK_TWITCH_DISABLE_ADS);
     private static final String VALUE_STREAMLINK_TWITCH_DISABLE_RERUNS = getConfig(KEY_STREAMLINK_TWITCH_DISABLE_RERUNS, DEFAULT_STREAMLINK_TWITCH_DISABLE_RERUNS);
     private static final String VALUE_STREAMLINK_ADDITIONAL_OPTIONS = getConfig(KEY_STREAMLINK_ADDITIONAL_OPTIONS, DEFAULT_STREAMLINK_ADDITIONAL_OPTIONS);
+    private static final String VALUE_STREAMLINK_LOG_LEVEL = getConfig(KEY_STREAMLINK_LOG_LEVEL, DEFAULT_STREAMLINK_LOG_LEVEL);
     // // FFmpeg
     private static final String VALUE_FFMPEG_PATH = getConfig(KEY_FFMPEG_PATH, DEFAULT_FFMPEG_PATH);
     private static final String VALUE_FFMPEG_OPTIONS = getConfig(KEY_FFMPEG_OPTIONS, DEFAULT_FFMPEG_OPTIONS);
+    private static final String VALUE_FFMPEG_LOG_LEVEL = getConfig(KEY_FFMPEG_LOG_LEVEL, DEFAULT_FFMPEG_LOG_LEVEL);
     // // Twitch
     private static final String VALUE_TWITCH_CLIENT_ID = getConfig(KEY_TWITCH_CLIENT_ID, DEFAULT_TWITCH_CLIENT_ID);
     private static final String VALUE_TWITCH_CLIENT_SECRET = getConfig(KEY_TWITCH_CLIENT_SECRET, DEFAULT_TWITCH_CLIENT_SECRET);
@@ -203,7 +210,14 @@ public class Config {
     }
 
     public static String getStreamlinkAdditionalOptions() {
+        if (VALUE_STREAMLINK_ADDITIONAL_OPTIONS.isEmpty()) {
+            return "";
+        }
         return checkValue(VALUE_STREAMLINK_ADDITIONAL_OPTIONS, KEY_STREAMLINK_ADDITIONAL_OPTIONS);
+    }
+
+    public static String getStreamlinkLogLevel() {
+        return checkValue(VALUE_STREAMLINK_LOG_LEVEL, KEY_STREAMLINK_LOG_LEVEL).toLowerCase(Locale.ROOT);
     }
 
     // // FFmpeg
@@ -214,6 +228,10 @@ public class Config {
 
     public static String getFfmpegOptions() {
         return checkValue(VALUE_FFMPEG_OPTIONS, KEY_FFMPEG_OPTIONS);
+    }
+
+    public static String getFfmpegLogLevel() {
+        return checkValue(VALUE_FFMPEG_LOG_LEVEL, KEY_FFMPEG_LOG_LEVEL).toLowerCase(Locale.ROOT);
     }
 
     // // Twitch
