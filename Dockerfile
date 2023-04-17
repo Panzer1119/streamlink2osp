@@ -1,4 +1,4 @@
-FROM rayou/streamlink:5.3.1
+FROM rayou/streamlink:5.4.0
 
 # Install curl and jq and remove cache
 RUN apk add --no-cache curl jq
